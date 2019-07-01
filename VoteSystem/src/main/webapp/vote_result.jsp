@@ -44,7 +44,7 @@
         <ul class="nav nav-pills nav-stacked">
             <li role="presentation" class="active"><a href="main.jsp">投票列表</a></li>
             <li role="presentation"><a href="new_vote.jsp">新建投票</a></li>
-            <li role="presentation"><a href="#">投票管理</a></li>
+            <li role="presentation"><a href="main.jsp">投票管理</a></li>
         </ul>
     </div>
     <div class="col-lg-8">

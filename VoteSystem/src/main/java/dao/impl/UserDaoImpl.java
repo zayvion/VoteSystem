@@ -45,9 +45,15 @@ public class UserDaoImpl implements UserDao {
         ps.setString(1, user.getUsername());
         ps.setString(2, user.getPassword());
         rs = ps.executeQuery();
-        if (rs.next()){
-            num = rs.getInt("num");
-            return num;
+        try {
+            if (rs.next()){
+                num = rs.getInt("num");
+                return num;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.release(conn,ps);
         }
         return num;
 

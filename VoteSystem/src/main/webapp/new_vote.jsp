@@ -42,7 +42,7 @@
         <ul class="nav nav-pills nav-stacked">
             <li role="presentation"><a href="main.jsp">投票列表</a></li>
             <li role="presentation" class="active"><a href="new_vote.jsp">新建投票</a></li>
-            <li role="presentation"><a href="#">投票管理</a></li>
+            <li role="presentation"><a href="main.jsp">投票管理</a></li>
         </ul>
     </div>
     <div class="col-lg-8">
@@ -53,26 +53,26 @@
             <div class="panel-body">
                 <div class="input-group">
                     <label>投票内容</label>
-                    <input type="text" class="form-control" placeholder="请输入标题" aria-describedby="sizing-addon1">
+                    <input type="text" class="form-control" placeholder="请输入标题" aria-describedby="sizing-addon1" id="title">
                 </div><br>
                 <div class="input-group">
                     <label>投票类型</label><br>
                     <div>
                         <label class="radio-inline">
-                            <input type="radio" name="votetype" value="single" checked>单选
+                            <input type="radio" name="votetype" value="0" checked>单选
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="votetype"value="muti"> 多选
+                            <input type="radio" name="votetype"value="1">多选
                         </label><br><br>
                     </div>
                 </div>
                 <div class="input-group" id="options">
                     <label>投票选项</label>
-                    <input type="text" class="form-control" placeholder="请输入选项" aria-describedby="sizing-addon1">
-                    <input type="text" class="form-control" placeholder="请输入选项" aria-describedby="sizing-addon1">
+                    <input type="text" class="form-control" placeholder="请输入选项" aria-describedby="sizing-addon1" name="option">
+                    <input type="text" class="form-control" placeholder="请输入选项" aria-describedby="sizing-addon1" name="option">
                 </div>
                 <br>
-                <button type="button" class="btn btn-primary btn-sm">确定</button>
+                <button type="button" class="btn btn-primary btn-sm" id="submit">确定</button>
                 <a id="addoption">增加选项</a>
                 <a href="main.jsp">取消操作</a>
             </div>
@@ -89,7 +89,33 @@
     $(
         function () {
             $("#addoption").click(function () {
-                $("#options").append("<input type=\"text\" class=\"form-control\" placeholder=\"请输入选项\" aria-describedby=\"sizing-addon1\">");
+                $("#options").append("<input type=\"text\" class=\"form-control\" placeholder=\"请输入选项\" aria-describedby=\"sizing-addon1\" name=\"option\">");
+            });
+            $("#submit").click(function () {
+
+                var options =[];
+                $("input[name='option']").each(function(){
+                    options.push($(this).val());
+                })
+                console.log(options);
+
+                var title = $("#title").val().toString();
+                var votetype = $("input[name='votetype'][checked]").val().toString();
+                //获取主机名和端口
+                var host = window.document.location.origin;
+                $.ajax({
+                    url:"addvote",
+                    data:{"title":title,"type":votetype,"options":options.toString()},
+                    type:"post",
+                    success:function(result){
+                        alert("添加成功！");
+                        window.location.replace(host+"/main.jsp");
+                    },
+                    error:function (e) {
+                        alert("发生错误，添加失败！")
+                    }
+                })
+                    return true;
             });
         }
     )

@@ -12,6 +12,7 @@ import java.sql.SQLException;
 public interface UserDao {
     /**
      * 增加用户
+     *
      * @param user
      * @throws SQLException
      */
@@ -19,9 +20,10 @@ public interface UserDao {
 
     /**
      * 查找用户，比较用户名和密码
+     *
      * @param user
-     * @throws SQLException
      * @return num =1代表有匹配行
+     * @throws SQLException
      */
     int equalsUser(User user) throws SQLException;
 

@@ -44,6 +44,14 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>servlet.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetAllVoteItemServlet</servlet-name>
+        <servlet-class>servlet.GetAllVoteItemServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddVoteServlet</servlet-name>
+        <servlet-class>servlet.AddVoteServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -56,7 +64,15 @@
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetAllVoteItemServlet</servlet-name>
+        <url-pattern>/getall</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddVoteServlet</servlet-name>
+        <url-pattern>/addvote</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
