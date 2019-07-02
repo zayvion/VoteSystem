@@ -23,12 +23,13 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
         conn = JDBCUtils.getConn();
         Long id = 0l;
         int num = 0;
-        String sql = "INSERT INTO `t_vote_subject`(`title`, `type`, `create_date`, `update_date`) VALUES (?, ?, ?,?)";
+        String sql = "INSERT INTO `t_vote_subject`(`title`, `type`, `oper_user`,`create_date`, `update_date`) VALUES (?, ?, ?, ?, ?)";
         ps = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
         ps.setInt(2,voteItemSubject.getType());
         ps.setString(1,voteItemSubject.getTitle());
-        ps.setTimestamp(3, (Timestamp) voteItemSubject.getCreate_time());
-        ps.setTimestamp(4, (Timestamp) voteItemSubject.getUpdate_time());
+        ps.setInt(3,voteItemSubject.getOper_user());
+        ps.setTimestamp(4, (Timestamp) voteItemSubject.getCreate_time());
+        ps.setTimestamp(5, (Timestamp) voteItemSubject.getUpdate_time());
         try {
             num = ps.executeUpdate();
             rs = ps.getGeneratedKeys();
@@ -57,9 +58,10 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
                 int type = rs.getInt("type");
+                int userid = rs.getInt("oper_user");
                 Timestamp create_time = rs.getTimestamp("create_date");
                 Timestamp update_time = rs.getTimestamp("update_date");
-                VoteItemSubject voteItemSubject = new VoteItemSubject(title, type, create_time, update_time);
+                VoteItemSubject voteItemSubject = new VoteItemSubject(id,title, type, userid,create_time, update_time);
                 list.add(voteItemSubject);
             }
         } catch (SQLException e) {
@@ -71,7 +73,32 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
     }
 
     @Override
-    public VoteItemSubject getVoteItemById(VoteItemSubject voteItemSubject) throws SQLException {
-        return null;
+    public VoteItemSubject getVoteItemSubject(VoteItemSubject voteItemSubject) throws SQLException {
+        conn = JDBCUtils.getConn();
+        List<VoteItemSubject> list = new ArrayList<>();
+        String sql = "SELECT * FROM `t_vote_subject` WHERE `id`=?";
+        ps = conn.prepareStatement(sql);
+        try {
+            ps.setInt(1,voteItemSubject.getId());
+            rs = ps.executeQuery();
+            while (rs.next()){
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                int oper_user = rs.getInt("oper_user");
+                int type = rs.getInt("type");
+                Timestamp create_time = rs.getTimestamp("create_date");
+                Timestamp update_time = rs.getTimestamp("update_date");
+                voteItemSubject.setTitle(title);
+                voteItemSubject.setType(type);
+                voteItemSubject.setCreate_time(create_time);
+                voteItemSubject.setUpdate_time(update_time);
+                voteItemSubject.setOper_user(oper_user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.release(conn,ps);
+        }
+        return voteItemSubject;
     }
 }

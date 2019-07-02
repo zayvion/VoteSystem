@@ -4,13 +4,10 @@ package servlet;
 
 import pojo.VoteItemSubject;
 import pojo.VoteOption;
-import service.AddVoteItemService;
 import service.VoteItemSubjectService;
 import service.VoteOptionService;
-import service.impl.AddVoteItemServiceImpl;
 import service.impl.VoteItemSubjectServiceImpl;
 import service.impl.VoteOptionServiceImpl;
-import utils.JDBCUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,10 +28,12 @@ public class AddVoteServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String title = req.getParameter("title");
         int type = Integer.parseInt(req.getParameter("type"));
+        int userid = (int) req.getSession().getAttribute("userid");
         String[] options = req.getParameter("options").split(",");
         VoteItemSubject subject = new VoteItemSubject();
         subject.setTitle(title);
         subject.setType(type);
+        subject.setOper_user(userid);
         try {
             VoteItemSubjectService voteItemSubjectService = new VoteItemSubjectServiceImpl();
             VoteOptionService voteOptionService = new VoteOptionServiceImpl();

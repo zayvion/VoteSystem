@@ -27,7 +27,7 @@
     </style>
 </head>
 <body>
-<!-- 员工添加的模态框 -->
+<!-- 修改投票模态框 -->
 <div class="modal fade" id="vote_update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -40,29 +40,28 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">投票内容</label>
                         <div class="col-sm-10">
-                            <input type="text" name="name" class="form-control" id="vote_title_input" placeholder="请输入标题">
+                            <input type="text" name="vote_title" class="form-control" id="vote_title_input" placeholder="请输入标题">
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">投票类型</label>
                         <div class="col-sm-10">
-                            <input type="radio" class="checkbox-inline" name="type" value="0">男
-                            <input type="radio" class="checkbox-inline" name="type" value="1">女
+                            <input type="radio" class="checkbox-inline" name="vote_type" value="0">单选
+                            <input type="radio" class="checkbox-inline" name="vote_type" value="1">多选
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">投票选项</label>
-                        <div class="col-sm-10">
-                            <input type="checkbox" class="checkbox-inline" name="item" value="跑步">跑步 <br>
-                            <input type="checkbox" class="checkbox-inline" name="item" value="游泳">游泳 <br>
-                            <input type="checkbox" class="checkbox-inline" name="item" value="打球">打球 <br>
-                            <input type="checkbox" class="checkbox-inline" name="item" value="拳击">拳击 <br>
+                        <div class="col-sm-10" id="vote_options">
+       <%--                 <input type="text" name="item " class="form-control"value="跑步"><br>
+                            <input type="text" name="item " class="form-control"value="跑步"><br>
+                            <input type="text" name="item " class="form-control"value="跑步"><br>--%>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" id="emp_save_btn" onclick="f()">保存</button>
+                        <button type="button" class="btn btn-primary" id="vote_save_btn">保存</button>
                     </div>
                 </form>
             </div>
@@ -119,7 +118,7 @@
             type: "get",
             datatype: "json",
             success: function (result) {
-                console.log(result);
+                //console.log(result);
                 $.each(result, function (index, item) {
                     console.log(item.title)
                     var edit_button = "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"update(" + item.id + "\)\">修改</button>&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -149,9 +148,9 @@
             type: "get",
             datatype: "json",
             success: function (result) {
-                console.log(result);
+                //console.log(result);
                 $.each(result, function (index, item) {
-                    console.log(item.title)
+                    //console.log(item.title)
                     var edit_button = "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"update(" + item.id + "\)\">修改</button>&nbsp;&nbsp;&nbsp;&nbsp;";
                     var del_button = "<bu#tton type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"del(" + item.id + "\)\">删除</button>";
                     var p = $("<p></p>").addClass("text-right").append(edit_button).append(del_button);
@@ -166,12 +165,74 @@
 
                 })
             }
-        }
+        })
+
+    }
+    function loadData(id) {
+        $.ajax({
+            url: "getdata",
+            data: "id="+id,
+            type: "get",
+            datatype: "json",
+            success: function (result) {
+                //console.log(result);
+                $("input[name=vote_title]").val(result.title);
+                $("#vote_update input[name=vote_type]").val([result.type]);
+                $.each(result.options,function (index,item) {
+                    $("#vote_options").append("<input type='text' name='item' class='form-control' value="+item.option+" oid='"+item.id+"'><br>")
+                })
+                $("#vote_save_btn").click(function () {
+                    save(id);
+                });
+            }
+
+        })
+    }
+    function cleanOptions() {
+        $("#vote_options").empty();
+    }
+    function update(id) {
+        cleanOptions();
+        loadData(id);
         $('#vote_update').modal().show();
+
     }
-    function f() {
-        
+
+    function save(id) {
+        var arr=new Array();
+        var num;
+         num = $("input:text[name=item]").length
+        for (var i = 0; i <= $("input:text[name=item]").length-1; i++) {
+            var data;
+           data = {
+                "id": $("input:text[name=item]").eq(i).attr("oid"),
+                "option": $("input:text[name=item]").eq(i).val()
+            }
+            arr[i]=data;
+
+            }
+        console.log(arr);
+        $.ajax({
+            url: "update",
+            data: {
+                "length":num,
+                "id":id,
+                "title":$("#vote_title_input").val(),
+                "type":$("input[name=vote_type]:checked").val(),
+                "options":arr,
+            },
+            type: "post",
+            datatype: "json",
+            success: function (result) {
+                //console.log(result);
+                $('#vote_update').modal('hide');
+
+            }
+
+        })
     }
+
 </script>
+
 </body>
 </html>

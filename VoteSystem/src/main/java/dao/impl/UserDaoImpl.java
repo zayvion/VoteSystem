@@ -39,23 +39,23 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int equalsUser(User user) throws SQLException {
         conn = JDBCUtils.getConn();
-        int num =0;
-        String sql = "SELECT COUNT(*) AS `num` FROM `t_user` WHERE `username` = ? AND `password` = ?";
+        String sql = "SELECT *  FROM `t_user` WHERE `username` = ? AND `password` = ?";
         ps = conn.prepareStatement(sql);
         ps.setString(1, user.getUsername());
         ps.setString(2, user.getPassword());
         rs = ps.executeQuery();
+        int id = 0;
         try {
             if (rs.next()){
-                num = rs.getInt("num");
-                return num;
+                id  = rs.getInt("id");
+                return id;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             JDBCUtils.release(conn,ps);
         }
-        return num;
+        return id;
 
     }
 }

@@ -21,7 +21,7 @@ public interface UserService {
      * 查找用户，比较用户名和密码
      * @param user
      * @throws SQLException
-     * @return num =1代表有匹配行
+     * @return id
      */
     int equalsUser(User user) throws SQLException;
 }

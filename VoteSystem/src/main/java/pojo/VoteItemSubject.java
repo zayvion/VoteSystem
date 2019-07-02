@@ -12,6 +12,7 @@ public class VoteItemSubject {
     private int id;
     private String title;
     private int type;
+    private int oper_user;
     private Date create_time;
     private Date update_time;
 
@@ -21,6 +22,7 @@ public class VoteItemSubject {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", type=" + type +
+                ", oper_user=" + oper_user +
                 ", create_time=" + create_time +
                 ", update_time=" + update_time +
                 '}';
@@ -66,9 +68,25 @@ public class VoteItemSubject {
         this.update_time = update_time;
     }
 
+    public int getOper_user() {
+        return oper_user;
+    }
+
+    public void setOper_user(int oper_user) {
+        this.oper_user = oper_user;
+    }
+
     public VoteItemSubject(String title, int type, Date create_time, Date update_time) {
         this.title = title;
         this.type = type;
+        this.create_time = create_time;
+        this.update_time = update_time;
+    }
+
+    public VoteItemSubject(String title, int type, int oper_user, Date create_time, Date update_time) {
+        this.title = title;
+        this.type = type;
+        this.oper_user = oper_user;
         this.create_time = create_time;
         this.update_time = update_time;
     }
@@ -77,6 +95,15 @@ public class VoteItemSubject {
         this.id = id;
         this.title = title;
         this.type = type;
+        this.create_time = create_time;
+        this.update_time = update_time;
+    }
+
+    public VoteItemSubject(int id, String title, int type, int oper_user, Date create_time, Date update_time) {
+        this.id = id;
+        this.title = title;
+        this.type = type;
+        this.oper_user = oper_user;
         this.create_time = create_time;
         this.update_time = update_time;
     }

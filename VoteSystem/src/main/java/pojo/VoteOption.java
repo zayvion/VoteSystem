@@ -34,11 +34,26 @@ public class VoteOption {
         this.s_id = s_id;
     }
 
+    public VoteOption(int id, String option, int s_id) {
+        this.id = id;
+        this.option = option;
+        this.s_id = s_id;
+    }
+
     public VoteOption(String option, int s_id) {
         this.option = option;
         this.s_id = s_id;
     }
 
     public VoteOption() {
+    }
+
+    @Override
+    public String toString() {
+        return "VoteOption{" +
+                "id=" + id +
+                ", option='" + option + '\'' +
+                ", s_id=" + s_id +
+                '}';
     }
 }

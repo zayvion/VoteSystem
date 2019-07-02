@@ -1,8 +1,10 @@
 package dao;
 
+import pojo.VoteItemSubject;
 import pojo.VoteOption;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @Auther: zayvion
@@ -18,4 +20,13 @@ public interface VoteOptionDao {
      * @throws SQLException
      */
     int addVoteOption(VoteOption voteOption) throws SQLException;
+
+    /**
+     * 获取一道题的所有选项
+     *
+     * @param voteItemSubject
+     * @return
+     * @throws SQLException
+     */
+    List<VoteOption> getOptions (VoteItemSubject voteItemSubject) throws SQLException;
 }

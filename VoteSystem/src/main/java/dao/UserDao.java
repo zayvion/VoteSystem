@@ -22,7 +22,7 @@ public interface UserDao {
      * 查找用户，比较用户名和密码
      *
      * @param user
-     * @return num =1代表有匹配行
+     * @return id
      * @throws SQLException
      */
     int equalsUser(User user) throws SQLException;

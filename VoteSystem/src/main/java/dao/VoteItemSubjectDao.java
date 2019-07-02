@@ -35,5 +35,5 @@ public interface VoteItemSubjectDao {
      * @return
      * @throws SQLException
      */
-    VoteItemSubject getVoteItemById(VoteItemSubject voteItemSubject) throws SQLException;
+    VoteItemSubject getVoteItemSubject(VoteItemSubject voteItemSubject) throws SQLException;
 }

@@ -38,4 +38,31 @@ public class VoteOptionDaoImpl implements VoteOptionDao {
         }
         return num;
     }
+
+    @Override
+    public List<VoteOption> getOptions(VoteItemSubject voteItemSubject) throws SQLException {
+        conn = JDBCUtils.getConn();
+        List<VoteOption> list = new ArrayList<>();
+        String sql = "SELECT * FROM `t_vote_option` WHERE `s_id`=?";
+        ps = conn.prepareStatement(sql);
+        try {
+            ps.setInt(1,voteItemSubject.getId());
+            rs = ps.executeQuery();
+            while (rs.next()){
+                int id = rs.getInt("id");
+                String option = rs.getString("option");
+                int s_id = rs.getInt("s_id");
+                VoteOption voteOption = new VoteOption();
+                voteOption.setId(id);
+                voteOption.setOption(option);
+                voteOption.setS_id(s_id);
+                list.add(voteOption);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.release(conn,ps);
+        }
+        return list;
+    }
 }

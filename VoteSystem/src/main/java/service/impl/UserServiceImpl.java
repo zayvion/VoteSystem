@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int equalsUser(User user) throws SQLException {
         UserDao userDao = new UserDaoImpl();
-        int num = userDao.equalsUser(user);
-        return num;
+        int id = userDao.equalsUser(user);
+        return id;
     }
 }
