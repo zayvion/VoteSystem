@@ -2,7 +2,6 @@ package service.impl;
 
 import dao.VoteItemDao;
 import dao.impl.VoteItemDaoImpl;
-import pojo.VoteItem;
 import pojo.VoteItemSubject;
 import pojo.VoteOption;
 import service.VoteItemService;
@@ -28,5 +27,11 @@ public class VoteItemServiceImpl implements VoteItemService {
         VoteItemDao addVoteItemDao = new VoteItemDaoImpl();;
         voteItemSubject.setCreate_time(new java.sql.Timestamp(new java.util.Date().getTime()));
         addVoteItemDao.addVoteItem(voteItemSubject,voteOption);
+    }
+
+    @Override
+    public void delVoteItem(int id) throws SQLException {
+        VoteItemDao voteItemDao = new VoteItemDaoImpl();
+        voteItemDao.delVoteItem(id);
     }
 }

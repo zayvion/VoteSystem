@@ -1,6 +1,5 @@
 package dao;
 
-import pojo.VoteItemSubject;
 import pojo.VoteOption;
 
 import java.sql.SQLException;
@@ -24,9 +23,27 @@ public interface VoteOptionDao {
     /**
      * 获取一道题的所有选项
      *
-     * @param voteItemSubject
+     * @param subjectId
      * @return
      * @throws SQLException
      */
-    List<VoteOption> getOptions (VoteItemSubject voteItemSubject) throws SQLException;
+    List<VoteOption> getOptions (int subjectId) throws SQLException;
+
+    /**
+     * 获取一个选项多少人选中
+     *
+     * @param optionId
+     * @return
+     * @throws SQLException
+     */
+    int getIsSelectedNum(int optionId) throws SQLException;
+
+    /**
+     * 计算一个主题所有选项被选中多少次
+     *
+     * @param subjectId
+     * @return
+     * @throws SQLException
+     */
+    int getAllSelectedSum(int subjectId) throws SQLException;
 }

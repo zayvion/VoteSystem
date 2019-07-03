@@ -16,7 +16,9 @@ import java.util.List;
 public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
     private Connection conn = null;
     private PreparedStatement ps = null;
+    private PreparedStatement ps2 = null;
     private ResultSet rs = null;
+    private ResultSet rs2 = null;
 
     @Override
     public Long addVoteItem(VoteItemSubject voteItemSubject) throws SQLException {
@@ -24,50 +26,56 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
         Long id = 0l;
         int num = 0;
         String sql = "INSERT INTO `t_vote_subject`(`title`, `type`, `oper_user`,`create_date`, `update_date`) VALUES (?, ?, ?, ?, ?)";
-        ps = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-        ps.setInt(2,voteItemSubject.getType());
-        ps.setString(1,voteItemSubject.getTitle());
-        ps.setInt(3,voteItemSubject.getOper_user());
+        ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(2, voteItemSubject.getType());
+        ps.setString(1, voteItemSubject.getTitle());
+        ps.setInt(3, voteItemSubject.getOper_user());
         ps.setTimestamp(4, (Timestamp) voteItemSubject.getCreate_time());
         ps.setTimestamp(5, (Timestamp) voteItemSubject.getUpdate_time());
         try {
             num = ps.executeUpdate();
             rs = ps.getGeneratedKeys();
-            if(rs.next()){
-                id  = rs.getLong(1);
+            if (rs.next()) {
+                id = rs.getLong(1);
             }
-            System.out.println("增加了"+num+"行数据"+";主键为"+id);
+            System.out.println("增加了" + num + "行数据" + ";主键为" + id);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.release(conn,ps);
+            JDBCUtils.release(conn, ps);
         }
 
         return id;
     }
 
     @Override
-    public List<VoteItemSubject> getAllVoteItem() throws SQLException {
+    public List<VoteItemSubject> getAllVoteItem(int id) throws SQLException {
         conn = JDBCUtils.getConn();
+        int num = 0;
         List<VoteItemSubject> list = new ArrayList<>();
         String sql = "SELECT * FROM `t_vote_subject` ORDER BY `id` DESC LIMIT 0,1000";
+        String sql2 = "SELECT COUNT(*) AS `num` FROM t_join_vote WHERE `u_id`=? and `s_id`= ?";
         ps = conn.prepareStatement(sql);
+        ps2 = conn.prepareStatement(sql2);
+
         try {
             rs = ps.executeQuery();
-            while (rs.next()){
-                int id = rs.getInt("id");
+            while (rs.next()) {
+                int idd = rs.getInt("id");
                 String title = rs.getString("title");
                 int type = rs.getInt("type");
                 int userid = rs.getInt("oper_user");
                 Timestamp create_time = rs.getTimestamp("create_date");
                 Timestamp update_time = rs.getTimestamp("update_date");
-                VoteItemSubject voteItemSubject = new VoteItemSubject(id,title, type, userid,create_time, update_time);
+                VoteItemSubject voteItemSubject = new VoteItemSubject(idd, title, type, userid,  create_time, update_time);
                 list.add(voteItemSubject);
             }
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.release(conn,ps);
+            JDBCUtils.release(conn, ps);
         }
         return list;
     }
@@ -79,9 +87,9 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
         String sql = "SELECT * FROM `t_vote_subject` WHERE `id`=?";
         ps = conn.prepareStatement(sql);
         try {
-            ps.setInt(1,voteItemSubject.getId());
+            ps.setInt(1, voteItemSubject.getId());
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
                 int oper_user = rs.getInt("oper_user");
@@ -97,7 +105,7 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.release(conn,ps);
+            JDBCUtils.release(conn, ps);
         }
         return voteItemSubject;
     }

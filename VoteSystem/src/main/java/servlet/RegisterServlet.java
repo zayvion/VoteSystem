@@ -26,8 +26,10 @@ public class RegisterServlet extends HttpServlet {
         user.setUsername(username);
         user.setPassword(password);
         try {
-            userService.addUser(user);
-            req.getRequestDispatcher("main.jsp").forward(req,resp);
+            int id = userService.addUser(user).intValue();
+            req.getSession().setAttribute("userid",id);
+            req.setAttribute("msg", "注册成功，请登录！");
+            req.getRequestDispatcher("index.jsp").forward(req,resp);
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("插入失败！");

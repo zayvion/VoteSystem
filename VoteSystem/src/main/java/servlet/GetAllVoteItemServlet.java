@@ -23,7 +23,16 @@ public class GetAllVoteItemServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         VoteItemSubjectService voteItemSubjectService = new VoteItemSubjectServiceImpl();
         try {
-            List<VoteItemSubject> list = voteItemSubjectService.getAllVoteItemSubject();
+            int userid = (int)req.getSession().getAttribute("userid");
+            List<VoteItemSubject> list = voteItemSubjectService.getAllVoteItemSubject(userid);
+            for (VoteItemSubject subject:list) {
+                boolean isjoin = voteItemSubjectService.isJoin(subject.getId(), userid);
+                int optionNum = voteItemSubjectService.getOptionNum(subject.getId());
+                int joinNum = voteItemSubjectService.getJoinNum(subject.getId());
+                subject.setJoin(isjoin);
+                subject.setJoinNum(joinNum);
+                subject.setOptionNum(optionNum);
+            }
             //把数据用json传递到前台，进行ajax操作
             String json = new Gson().toJson(list);
             resp.setContentType("application/json; charset=utf-8");

@@ -16,17 +16,22 @@
     <base href="<%=basePath%>">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css">
     <style>
-        body { margin-top: 70px; }
-        #welcome{
-            font-size: 16px;
-            line-height: 50px ;
+        body {
+            margin-top: 70px;
         }
-        a{
-            padding-left:10px ;
-            text-decoration:underline;
+
+        #welcome {
+            font-size: 16px;
+            line-height: 50px;
+        }
+
+        a {
+            padding-left: 10px;
+            text-decoration: underline;
             cursor: pointer
         }
-        .progress-bar{
+
+        .progress-bar {
             min-width: 2em;
         }
     </style>
@@ -34,36 +39,43 @@
 <body>
 <div class="container">
     <nav class="navbar  navbar-fixed-top navbar-default">
-        <span id="welcome"> 欢迎您：<strong>${sessionScope.userFlag}</strong></span>
-        <c:if test="${!sessionScope.userFlag}">
-        <a type="button" class="btn btn-default navbar-btn navbar-right" href="logout">退出系统</a>
-        </c:if>
-
+        <div class="container">
+            <span id="welcome"> 欢迎您：<strong>${sessionScope.userFlag}</strong></span>
+            <c:if test="${!sessionScope.userFlag}">
+            <a type="button" class="btn btn-default navbar-btn navbar-right" href="logout">退出系统</a>
+            </c:if>
     </nav>
     <div class="col-lg-4">
         <ul class="nav nav-pills nav-stacked">
-            <li role="presentation" class="active"><a href="main.jsp">投票列表</a></li>
-            <li role="presentation"><a href="new_vote.jsp">新建投票</a></li>
             <li role="presentation"><a href="main.jsp">投票管理</a></li>
+            <li role="presentation" class="active"><a href="new_vote.jsp">新建投票</a></li>
         </ul>
     </div>
     <div class="col-lg-8">
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <h2 class="panel-title">查看投票</h2>
+        <form id="form">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h2 class="panel-title">参与投票</h2>
+                </div>
+
+                <div class="panel-body">
+                    <label id="vote_title" type=""></label>
+                    <br>
+                    <div id="vote_option">
+                        <%--<p><input type="radio" name="a" value="">迅雷</p>
+                        <p><input type="radio" name="a" value="">迅雷</p>
+                        <p><input type="radio" name="a" value="">迅雷</p>
+                        <p><input type="radio"name="a" value="">迅雷</p>--%>
+                        <%--<p><label><input type='checkbox' value='' name='checkbox'>选项 1</label></p>
+                        <p><label><input type="checkbox" value="" name="checkbox">选项 1</label></p>
+                        <p><label><input type="checkbox" value="" name="checkbox">选项 1</label></p>
+                        <p><label><input type="checkbox" value="" name="checkbox">选项 1</label></p>--%>
+        </form>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="vote(${id})">投票</button>
+                </div>
             </div>
-            <div class="panel-body">
-                <label>你觉得最好的下载工具</label>
-                <p>共有<strong>2</strong>个选项，已有<strong>2</strong>个网友参与</p>
-                <br>
 
-                <p><input type="radio"name="a" value="">迅雷</p>
-                <p><input type="radio"name="a" value="">迅雷</p>
-                <p><input type="radio"name="a" value="">迅雷</p>
-                <p><input type="radio"name="a" value="">迅雷</p>
-
-                <button type="button" class="btn btn-primary">投票</button>
-        </div>
         <footer class="modal-footer">
             <h4 class="text-center">在线投票系统</h4>
             <h5 class="text-center">Copyright © 2019&nbsp;&nbsp;&nbsp;2018200279李紫霖. All rights reserved</h5>
@@ -75,11 +87,86 @@
 <script>
     $(
         function () {
+            let href = window.location.href;
+            let indexOf = href.indexOf("=");
+            var id = href.substring(indexOf + 1, href.length)
+            console.log(id);
+            $.ajax({
+                url: "getdata",
+                data: "id=" + id,
+                type: "get",
+                datatype: "json",
+                success: function (result) {
+                    console.log(result);
+                    $("#vote_title").attr("type", result.type);
+                    $("#vote_title").append(result.title);
+                    if (result.type == '0') {
+                        $.each(result.options, function (index, item) {
+                            $("#vote_option").append($("<p><input type='radio' name='radio' value='" + item.id + "'>" + item.option + "</p>"));
+                            $('input:radio:first').attr('checked', 'checked');
+                        })
+                    } else {
+                        $.each(result.options, function (index, item) {
+                            //var tag = $("<p><input type='radio' name='a' value='"+item.id+"'>"+item.option+"</p>")
+                            $("#vote_option").append($("<p><label><input type='checkbox' value='" + item.id + "' name='checkbox'>" + item.option + "</label></p>"))
+                        })
+                    }
+
+
+                }
+
+            });
             $("#addoption").click(function () {
                 $("#options").append("<input type=\"text\" class=\"form-control\" placeholder=\"请输入选项\" aria-describedby=\"sizing-addon1\">");
             });
         }
     )
+
+        function vote(id) {
+        console.log($("#vote_title").attr("type"))
+        let array = $("#form").serializeArray();
+        let optionvalue = array[0].value;
+        var optionvalues = [];
+         optionvalues = array;
+        console.log(optionvalue.toString());
+        if ($("#vote_title").attr("type") == "0") {
+            $.ajax({
+                url: "addresult",
+                data: {
+                    "s_id": id,
+                    "userid":<%=session.getAttribute("userid")%>,
+                    "o_id":optionvalue.toString(),
+                    "type":0
+                },
+                type: "post",
+                success: function (result) {
+                    window.location.replace("<%= basePath+"main.jsp"%>");
+                },
+                error: function (e) {
+
+                }
+            })
+        }else if ($("#vote_title").attr("type") == "1"){
+            let length = optionvalues.length;
+          $.ajax({
+                url: "addresult",
+                data: {
+                    "s_id": id,
+                    "userid":<%=session.getAttribute("userid")%>,
+                    "length":length,
+                    "o_id":optionvalues,
+                    "type":1
+                },
+                type: "post",
+                success: function (result) {
+                    window.location.replace("<%= basePath+"main.jsp"%>");
+                },
+                error: function (e) {
+
+                }
+            })
+        }
+    }
 </script>
 </body>
 </html>

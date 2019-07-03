@@ -14,12 +14,13 @@ import java.sql.SQLException;
  */
 public class UserServiceImpl implements UserService {
     @Override
-    public void addUser(User user) throws SQLException {
+    public Long addUser(User user) throws SQLException {
         UserDao userDao = new UserDaoImpl();
         //对user对象进行补全，默认type=0为用户，status=1为正常状态
         user.setType(1);
         user.setStatus(1);
-        userDao.addUser(user);
+        Long id = userDao.addUser(user);
+        return  id ;
     }
 
     @Override

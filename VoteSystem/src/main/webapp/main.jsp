@@ -24,6 +24,10 @@
             font-size: 16px;
             line-height: 50px;
         }
+        a{
+            text-decoration: none;
+            color:inherit;
+        }
     </style>
 </head>
 <body>
@@ -68,22 +72,36 @@
         </div>
     </div>
 </div>
+<%--    确认删除模态框--%>
+<div class="modal fade" tabindex="-1" role="dialog"id="confirm_del">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">确认删除</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" id="del_button">删除</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <nav class="navbar  navbar-fixed-top navbar-default">
-
         <div class="container">
             <span id="welcome"> 欢迎您：<strong>${sessionScope.userFlag}</strong></span>
             <c:if test="${!sessionScope.userFlag}">
             <a type="button" class="btn btn-default navbar-btn navbar-right" href="logout">退出系统</a>
             </c:if>
-
-
     </nav>
     <div class="col-lg-4">
         <ul class="nav nav-pills nav-stacked">
-            <li role="presentation" class="active"><a href="main.jsp">投票列表</a></li>
+            <li role="presentation" class="active"><a href="main.jsp">投票管理</a></li>
             <li role="presentation"><a href="new_vote.jsp">新建投票</a></li>
-            <li role="presentation"><a href="main.jsp">投票管理</a></li>
         </ul>
     </div>
     <div class="col-lg-8">
@@ -106,7 +124,7 @@
             <h5 class="text-center">Copyright © 2019&nbsp;&nbsp;&nbsp;2018200279李紫霖. All rights reserved</h5>
         </footer>
     </div>
-</div>
+
 
 <script src="assets/js/jquery-1.11.1.js"></script>
 <script src="assets/bootstrap/js/bootstrap.js"></script>
@@ -114,24 +132,27 @@
     $(function () {
         $.ajax({
             url: "getall",
-            data: "",
+            data: "userid="+<%=session.getAttribute("userid")%>,
             type: "get",
             datatype: "json",
             success: function (result) {
-                //console.log(result);
+                var userid =<%= session.getAttribute("userid")%>;
                 $.each(result, function (index, item) {
-                    console.log(item.title)
-                    var edit_button = "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"update(" + item.id + "\)\">修改</button>&nbsp;&nbsp;&nbsp;&nbsp;";
-                    var del_button = "<bu#tton type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"del(" + item.id + "\)\">删除</button>";
-                    var p = $("<p></p>").addClass("text-right").append(edit_button).append(del_button);
-                    var span = "<span>共有<strong>2</strong>个选项，已有<strong>2</strong>个网友参与</span>";
+                    //console.log(item.title)
+
+                    var join_button = "<a href='vote?id="+item.id+"'><button  type='button' class='btn btn-success btn-sm' isJoin='"+item.isJoin+"'>参与投票</button></a>&nbsp;&nbsp;&nbsp;&nbsp;";
+                    var edit_button = "<input type='button' value='修改' class='btn btn-primary btn-sm' onclick='update("+item.id+")' oper_user='"+item.oper_user+"' joinNum='"+item.joinNum+"'>&nbsp;&nbsp;&nbsp;&nbsp;";
+                    var del_button = "<bu#tton type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"confirm_del(" + item.id + "\)\">删除</button>";
+                    var p = $("<p></p>").addClass("text-right").append(join_button).append(edit_button).append(del_button);
+                    var span = "<span>共有<strong>"+item.optionNum+"</strong>个选项，网友已参加<strong>"+item.joinNum+"</strong>次投票</span>";
                     var panel_body = $("<div></div>").addClass("panel-body").append(span).append(p);
-                    var panel_title = $("<h3></h3>").addClass("panel-title").append(item.title);
+                    var panel_title = $("<h3></h3>").addClass("panel-title").append("<a href='result?id="+item.id+"'"+">"+item.title+"</a>");
                     var panel_heading = $("<div></div>").addClass("panel-heading").append(panel_title);
-                    var panel = $("<div></div>").addClass("panel panel-default panel-info").append(panel_heading).append(panel_body)
-
+                    var panel = $("<div></div>").addClass("panel panel-default panel-info").append(panel_heading).append(panel_body);
                     $("#content").append(panel);
-
+                    $("button[isJoin=true]").addClass("disabled");
+                    $("button[isJoin=true]").empty().append("已投票");
+                    //$(" button[joinNum != 0]").addClass("disabled");
 
                 })
             }
@@ -141,6 +162,7 @@
 
 </script>
 <script>
+
     function update(id) {
         $.ajax({
             url: "getitem",
@@ -152,8 +174,8 @@
                 $.each(result, function (index, item) {
                     //console.log(item.title)
                     var edit_button = "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"update(" + item.id + "\)\">修改</button>&nbsp;&nbsp;&nbsp;&nbsp;";
-                    var del_button = "<bu#tton type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"del(" + item.id + "\)\">删除</button>";
-                    var p = $("<p></p>").addClass("text-right").append(edit_button).append(del_button);
+                    var del_button = "<bu#tton type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"confirm_del(" + item.id + "\)\">删除</button>";
+                    var p = $("<p></p>").addClass("text-right").append(vote_button).append(edit_button).append(del_button);
                     var span = "<span>共有<strong>2</strong>个选项，已有<strong>2</strong>个网友参与</span>";
                     var panel_body = $("<div></div>").addClass("panel-body").append(span).append(p);
                     var panel_title = $("<h3></h3>").addClass("panel-title").append(item.title);
@@ -161,7 +183,6 @@
                     var panel = $("<div></div>").addClass("panel panel-default panel-info").append(panel_heading).append(panel_body)
 
                     $("#content").append(panel);
-
 
                 })
             }
@@ -195,7 +216,6 @@
         cleanOptions();
         loadData(id);
         $('#vote_update').modal().show();
-
     }
 
     function save(id) {
@@ -231,6 +251,31 @@
 
         })
     }
+    function confirm_del(id) {
+        $("#confirm_del .modal-body").append("<span style='font-size: 16px'>是否删除id为"+id+"的投票题目吗？</span>");
+        $('#confirm_del').modal('show');
+        $("#del_button").click(function () {
+            del(id);
+            window.location.replace("<%= basePath+"main.jsp"%>");
+        });
+
+    }
+
+    function del(id) {
+        $.ajax({
+            url: "del",
+            data: "id="+id ,
+            type: "post",
+            datatype: "json",
+            success: function (result) {
+                //console.log(result);
+                $('#confirm_del').modal('hide');
+            }
+
+        })
+    }
+
+
 
 </script>
 

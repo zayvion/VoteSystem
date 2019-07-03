@@ -27,7 +27,7 @@ public interface VoteItemSubjectDao {
      * @return List<VoteItem> 投票列表
      * @throws SQLException
      */
-    List<VoteItemSubject> getAllVoteItem() throws SQLException;
+    List<VoteItemSubject> getAllVoteItem(int id) throws SQLException;
 
     /**
      * 取单条投票主题

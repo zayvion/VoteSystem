@@ -1,7 +1,6 @@
 package service;
 
 import pojo.VoteItemSubject;
-import pojo.VoteItemSubject;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -27,7 +26,7 @@ public interface VoteItemSubjectService {
      * @return List<VoteItem> 投票列表
      * @throws SQLException
      */
-    List<VoteItemSubject> getAllVoteItemSubject() throws SQLException;
+    List<VoteItemSubject> getAllVoteItemSubject( int id ) throws SQLException;
 
     /**
      * 取单条投票主题
@@ -35,5 +34,32 @@ public interface VoteItemSubjectService {
      * @return
      * @throws SQLException
      */
-    VoteItemSubject getVoteItemSubjectById(VoteItemSubject voteItemSubject) throws SQLException;
+    VoteItemSubject getVoteItemSubject(VoteItemSubject voteItemSubject) throws SQLException;
+    /**
+     * 判断是否参加过投票
+     * @param sid uid
+     * @return boolean
+     * @throws SQLException
+     */
+    boolean isJoin(int sid,int uid) throws SQLException;
+
+    /**
+     * 获取参加投票的人次
+     *
+     * @param sid
+     * @return
+     * @throws SQLException
+     */
+    int getJoinNum (int sid) throws SQLException;
+
+    /**
+     * 获取选项个数
+     *
+     * @param sid
+     * @return
+     * @throws SQLException
+     */
+    int getOptionNum (int sid) throws SQLException;
+
+
 }

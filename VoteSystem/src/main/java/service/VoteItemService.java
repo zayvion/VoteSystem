@@ -30,4 +30,12 @@ public interface VoteItemService {
      * @throws SQLException
      */
     void addVoteItem(VoteItemSubject voteItemSubject, VoteOption voteOption) throws SQLException;
+
+    /**
+     * 删除投票
+     *
+     * @return int删除行数
+     * @throws SQLException
+     */
+    void delVoteItem(int id) throws SQLException;
 }

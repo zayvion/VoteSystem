@@ -60,6 +60,22 @@
         <servlet-name>UpdateVoteItemServlet</servlet-name>
         <servlet-class>servlet.UpdateVoteItemServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DelVoteItemServlet</servlet-name>
+        <servlet-class>servlet.DelVoteItemServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowVoteResultServlet</servlet-name>
+        <servlet-class>servlet.ShowVoteResultServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VoteServlet</servlet-name>
+        <servlet-class>servlet.VoteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddResultServlet</servlet-name>
+        <servlet-class>servlet.AddResultServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -87,6 +103,22 @@
     <servlet-mapping>
         <servlet-name>UpdateVoteItemServlet</servlet-name>
         <url-pattern>/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DelVoteItemServlet</servlet-name>
+        <url-pattern>/del</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowVoteResultServlet</servlet-name>
+        <url-pattern>/result</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VoteServlet</servlet-name>
+        <url-pattern>/vote</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddResultServlet</servlet-name>
+        <url-pattern>/addresult</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>

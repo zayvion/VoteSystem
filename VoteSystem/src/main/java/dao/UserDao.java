@@ -16,7 +16,7 @@ public interface UserDao {
      * @param user
      * @throws SQLException
      */
-    void addUser(User user) throws SQLException;
+    Long addUser(User user) throws SQLException;
 
     /**
      * 查找用户，比较用户名和密码

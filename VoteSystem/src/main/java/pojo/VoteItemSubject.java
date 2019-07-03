@@ -13,8 +13,36 @@ public class VoteItemSubject {
     private String title;
     private int type;
     private int oper_user;
+    private boolean isJoin;
     private Date create_time;
     private Date update_time;
+    private int joinNum;
+    private int optionNum;
+
+    public int getJoinNum() {
+        return joinNum;
+    }
+
+    public void setJoinNum(int joinNum) {
+        this.joinNum = joinNum;
+    }
+
+    public int getOptionNum() {
+        return optionNum;
+    }
+
+    public void setOptionNum(int optionNum) {
+        this.optionNum = optionNum;
+    }
+
+    public boolean isJoin() {
+        return isJoin;
+    }
+
+    public void setJoin(boolean join) {
+        isJoin = join;
+    }
+
 
     @Override
     public String toString() {
@@ -23,6 +51,7 @@ public class VoteItemSubject {
                 ", title='" + title + '\'' +
                 ", type=" + type +
                 ", oper_user=" + oper_user +
+                ", isJoin=" + isJoin +
                 ", create_time=" + create_time +
                 ", update_time=" + update_time +
                 '}';
@@ -76,6 +105,10 @@ public class VoteItemSubject {
         this.oper_user = oper_user;
     }
 
+    public VoteItemSubject(int id) {
+        this.id = id;
+    }
+
     public VoteItemSubject(String title, int type, Date create_time, Date update_time) {
         this.title = title;
         this.type = type;
@@ -106,6 +139,37 @@ public class VoteItemSubject {
         this.oper_user = oper_user;
         this.create_time = create_time;
         this.update_time = update_time;
+    }
+
+    public VoteItemSubject(String title, int type, int oper_user, boolean isJoin, Date create_time, Date update_time) {
+        this.title = title;
+        this.type = type;
+        this.oper_user = oper_user;
+        this.isJoin = isJoin;
+        this.create_time = create_time;
+        this.update_time = update_time;
+    }
+
+    public VoteItemSubject(int id, String title, int type, int oper_user, boolean isJoin, Date create_time, Date update_time) {
+        this.id = id;
+        this.title = title;
+        this.type = type;
+        this.oper_user = oper_user;
+        this.isJoin = isJoin;
+        this.create_time = create_time;
+        this.update_time = update_time;
+    }
+
+    public VoteItemSubject(int id, String title, int type, int oper_user, boolean isJoin, Date create_time, Date update_time, int joinNum, int optionNum) {
+        this.id = id;
+        this.title = title;
+        this.type = type;
+        this.oper_user = oper_user;
+        this.isJoin = isJoin;
+        this.create_time = create_time;
+        this.update_time = update_time;
+        this.joinNum = joinNum;
+        this.optionNum = optionNum;
     }
 
     public VoteItemSubject() {

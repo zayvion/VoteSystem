@@ -1,16 +1,14 @@
 package dao.impl;
 
-import com.google.gson.Gson;
+import dao.VoteItemDao;
 import dao.VoteItemSubjectDao;
 import dao.VoteOptionDao;
 import pojo.VoteItem;
-import dao.VoteItemDao;
 import pojo.VoteItemSubject;
 import pojo.VoteOption;
 import utils.JDBCUtils;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +21,7 @@ public class VoteItemDaoImpl implements VoteItemDao {
     private PreparedStatement ps = null;
     private PreparedStatement ps1 = null;
     private PreparedStatement ps2 = null;
+    private PreparedStatement ps3 = null;
     private ResultSet rs = null;
 
     @Override
@@ -66,7 +65,7 @@ public class VoteItemDaoImpl implements VoteItemDao {
         VoteItemSubjectDao voteItemSubjectDao = new VoteItemSubjectDaoImpl();
         VoteItemSubject subject = voteItemSubjectDao.getVoteItemSubject(voteItemSubject);
         VoteOptionDao voteOptionDao = new VoteOptionDaoImpl();
-        List<VoteOption> optionList = voteOptionDao.getOptions(voteItemSubject);
+        List<VoteOption> optionList = voteOptionDao.getOptions(voteItemSubject.getId());
 
         voteItem.setOptions(optionList);
         voteItem.setId(subject.getId());
@@ -99,6 +98,33 @@ public class VoteItemDaoImpl implements VoteItemDao {
                 ps2.executeUpdate();
                 conn.commit();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            conn.rollback();
+        } finally {
+            JDBCUtils.release(conn,ps);
+        }
+    }
+
+    @Override
+    public void delVoteItem(int id) throws SQLException {
+        conn = JDBCUtils.getConn();
+        conn.setAutoCommit(false);
+        String sql1 ="DELETE FROM `t_vote_option` WHERE `s_id` =  ?";
+        String sql2 ="DELETE FROM `t_vote_subject` WHERE `id` =  ?";
+        String sql3 ="DELETE FROM `t_join_vote` WHERE `s_id` =  ?";
+        try {
+            ps1 = conn.prepareStatement(sql1);
+            ps1.setInt(1, id);
+            int num1 = ps1.executeUpdate();
+            ps2 = conn.prepareStatement(sql2);
+            ps2.setInt(1, id);
+            int num2 = ps2.executeUpdate();
+            ps3 = conn.prepareStatement(sql3);
+            ps3.setInt(1, id);
+            int num3 = ps3.executeUpdate();
+            conn.commit();
+            System.out.println("删除"+num1+num2+num3+"行");
         } catch (SQLException e) {
             e.printStackTrace();
             conn.rollback();

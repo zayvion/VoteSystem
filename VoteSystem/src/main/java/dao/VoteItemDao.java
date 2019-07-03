@@ -38,4 +38,11 @@ public interface VoteItemDao {
      */
     void updateVoteItem(VoteItemSubject voteItemSubject, List<VoteOption> options) throws SQLException;
 
+    /**
+     * 删除投票
+     *
+     * @return int删除行数
+     * @throws SQLException
+     */
+    void delVoteItem(int id) throws SQLException;
 }

@@ -40,12 +40,12 @@
     </nav>
     <div class="col-lg-4">
         <ul class="nav nav-pills nav-stacked">
-            <li role="presentation"><a href="main.jsp">投票列表</a></li>
-            <li role="presentation" class="active"><a href="new_vote.jsp">新建投票</a></li>
             <li role="presentation"><a href="main.jsp">投票管理</a></li>
+            <li role="presentation" class="active"><a href="new_vote.jsp">新建投票</a></li>
         </ul>
     </div>
     <div class="col-lg-8">
+        <form id="form">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h2 class="panel-title">添加新投票</h2>
@@ -58,11 +58,11 @@
                 <div class="input-group">
                     <label>投票类型</label><br>
                     <div>
-                        <label class="radio-inline">
-                            <input type="radio" name="votetype" value="0" checked>单选
+                        <label class="radio-inline" id="votetype">
+                            <input type="radio" name="vote_type" value="0"/>单选
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="votetype"value="1">多选
+                            <input type="radio" name="vote_type"value="1"/>多选
                         </label><br><br>
                     </div>
                 </div>
@@ -77,6 +77,7 @@
                 <a href="main.jsp">取消操作</a>
             </div>
         </div>
+        </form>
         <footer class="modal-footer">
             <h4 class="text-center">在线投票系统</h4>
             <h5 class="text-center">Copyright © 2019&nbsp;&nbsp;&nbsp;2018200279李紫霖. All rights reserved</h5>
@@ -100,7 +101,11 @@
                 console.log(options);
 
                 var title = $("#title").val().toString();
-                var votetype = $("input[name='votetype'][checked]").val().toString();
+
+                votetype =  $("input[name='vote_type'][checked]").val();
+
+                let serialize = $("#form").serializeArray();
+                var votetype = serialize[0].value;
                 //获取主机名和端口
                 var host = window.document.location.origin;
                 $.ajax({

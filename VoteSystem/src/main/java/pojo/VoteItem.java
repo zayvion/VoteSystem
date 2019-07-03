@@ -1,8 +1,5 @@
 package pojo;
 
-import javafx.util.converter.TimeStringConverter;
-
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +15,7 @@ public class VoteItem {
     private List<VoteOption> options;
     private Date create_date;
     private Date update_date;
+    private boolean isJoin;
 
     @Override
     public String toString() {
@@ -28,6 +26,7 @@ public class VoteItem {
                 ", options=" + options +
                 ", create_date=" + create_date +
                 ", update_date=" + update_date +
+                ", isJoin=" + isJoin +
                 '}';
     }
 
@@ -75,6 +74,14 @@ public class VoteItem {
         return update_date;
     }
 
+    public boolean isJoin() {
+        return isJoin;
+    }
+
+    public void setJoin(boolean join) {
+        isJoin = join;
+    }
+
     public void setUpdate_date(Date update_date) {
         this.update_date = update_date;
     }
@@ -86,6 +93,16 @@ public class VoteItem {
         this.options = options;
         this.create_date = create_date;
         this.update_date = update_date;
+    }
+
+    public VoteItem(int id, String title, int type, List<VoteOption> options, Date create_date, Date update_date, boolean isJoin) {
+        this.id = id;
+        this.title = title;
+        this.type = type;
+        this.options = options;
+        this.create_date = create_date;
+        this.update_date = update_date;
+        this.isJoin = isJoin;
     }
 
     public VoteItem() {
