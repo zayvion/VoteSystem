@@ -36,7 +36,7 @@ public class VoteDaoImpl implements VoteDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.release(conn,ps);
+            JDBCUtils.release(conn,ps,rs);
         }
 
     }

@@ -25,13 +25,14 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
         conn = JDBCUtils.getConn();
         Long id = 0l;
         int num = 0;
-        String sql = "INSERT INTO `t_vote_subject`(`title`, `type`, `oper_user`,`create_date`, `update_date`) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO `t_vote_subject`(`title`, `type`, `oper_user`,`create_date`, `update_date`, `end_time`) VALUES (?, ?, ?, ?, ?, ?)";
         ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.setInt(2, voteItemSubject.getType());
         ps.setString(1, voteItemSubject.getTitle());
         ps.setInt(3, voteItemSubject.getOper_user());
         ps.setTimestamp(4, (Timestamp) voteItemSubject.getCreate_time());
         ps.setTimestamp(5, (Timestamp) voteItemSubject.getUpdate_time());
+        ps.setTimestamp(6, new java.sql.Timestamp(voteItemSubject.geteffective_time().getTime()));
         try {
             num = ps.executeUpdate();
             rs = ps.getGeneratedKeys();
@@ -67,15 +68,24 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
                 int userid = rs.getInt("oper_user");
                 Timestamp create_time = rs.getTimestamp("create_date");
                 Timestamp update_time = rs.getTimestamp("update_date");
-                VoteItemSubject voteItemSubject = new VoteItemSubject(idd, title, type, userid,  create_time, update_time);
-                list.add(voteItemSubject);
+                Timestamp end_time = rs.getTimestamp("end_time");
+
+                VoteItemSubject subject = new VoteItemSubject();
+                subject.setId(idd);
+                subject.setTitle(title);
+                subject.setType(type);
+                subject.setOper_user(userid);
+                subject.setCreate_time(create_time);
+                subject.setUpdate_time(update_time);
+                subject.seteffective_time(end_time);
+                list.add(subject);
             }
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.release(conn, ps);
+            JDBCUtils.release(conn, ps,rs);
         }
         return list;
     }
@@ -96,16 +106,18 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
                 int type = rs.getInt("type");
                 Timestamp create_time = rs.getTimestamp("create_date");
                 Timestamp update_time = rs.getTimestamp("update_date");
+                Timestamp end_time = rs.getTimestamp("end_time");
                 voteItemSubject.setTitle(title);
                 voteItemSubject.setType(type);
                 voteItemSubject.setCreate_time(create_time);
                 voteItemSubject.setUpdate_time(update_time);
                 voteItemSubject.setOper_user(oper_user);
+                voteItemSubject.seteffective_time(end_time);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCUtils.release(conn, ps);
+            JDBCUtils.release(conn, ps,rs);
         }
         return voteItemSubject;
     }

@@ -28,6 +28,7 @@ public class VoteItemSubjectServiceImpl implements VoteItemSubjectService {
         Long id = 0l;
         VoteItemSubjectDao voteItemSubjectDao = new VoteItemSubjectDaoImpl();
         voteItemSubject.setCreate_time(new java.sql.Timestamp(new java.util.Date().getTime()));
+
         int num = 0;
         try {
             id = voteItemSubjectDao.addVoteItem(voteItemSubject);
@@ -60,14 +61,18 @@ public class VoteItemSubjectServiceImpl implements VoteItemSubjectService {
         ps = conn.prepareStatement(sql);
         ps.setInt(1,uid);
         ps.setInt(2,sid);
-        rs = ps.executeQuery();
-        while (rs.next()) {
-            num = rs.getInt(1);
-        }
-        if (num > 0) {
-            return true;
-        } else {
-            return false;
+        try {
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                num = rs.getInt(1);
+            }
+            if (num > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } finally {
+            JDBCUtils.release(conn,ps,rs);
         }
     }
 
@@ -78,9 +83,13 @@ public class VoteItemSubjectServiceImpl implements VoteItemSubjectService {
         String sql = "SELECT COUNT(*) FROM t_join_vote WHERE s_id =?";
         ps = conn.prepareStatement(sql);
         ps.setInt(1,sid);
-        rs = ps.executeQuery();
-        while (rs.next()) {
-            num = rs.getInt(1);
+        try {
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } finally {
+            JDBCUtils.release(conn,ps,rs);
         }
         return num;
     }
@@ -92,9 +101,13 @@ public class VoteItemSubjectServiceImpl implements VoteItemSubjectService {
         String sql = "SELECT COUNT(*) FROM t_vote_option WHERE s_id =?";
         ps = conn.prepareStatement(sql);
         ps.setInt(1,sid);
-        rs = ps.executeQuery();
-        while (rs.next()) {
-            num = rs.getInt(1);
+        try {
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } finally {
+                JDBCUtils.release(conn,ps,rs);
         }
         return num;
     }

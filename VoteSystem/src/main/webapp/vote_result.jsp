@@ -51,31 +51,21 @@
             <div class="panel-heading">
                 <h2 class="panel-title">查看投票</h2>
             </div>
-            <div class="panel-body">
-                <label>${title}</label>
-                <p>共有<strong>2</strong>个选项，已有<strong>2</strong>个网友参与</p>
-                <br>
-                <span>qq旋风（10%)</span>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
+            <div class="panel-body" >
+                <label style="font-size: 25px">${title}</label><br>
+                <label>本题截止投票时间：${endTime}</label>
+                <div id="vote_info"> </div>
+                <%-- <p>共有<strong>2</strong>个选项，已有<strong>2</strong>个网友参与</p>--%>
+                <div id="process"></div>
+                <%--<br>
+                    <span>qq旋风（10%)</span>
+                <div class='progress'>
+                    <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 10%;'>
                     </div>
-                </div>
-                <span>迅雷（60%）</span>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                    </div>
-                </div>
-                <span>area（20%）</span>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
-                    </div>
-                </div>
-                <span>other（10%）</span>
-                <div class="progress">
-                <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">
-                </div>&nbsp;&nbsp;
+                </div>--%>
+
             </div>
-                <button type="button" class="btn btn-primary" id="back_btn">返回投票列表</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-primary" id="back_btn">返回投票列表</button>
         </div>
         <footer class="modal-footer">
             <h4 class="text-center">在线投票系统</h4>
@@ -94,13 +84,23 @@
             var id = href.substring(indexOf+1,href.length)
             console.log(id);
             $.ajax({
-                url: "getdata",
+                url: "analyze",
                 data: "id="+id,
                 type: "get",
                 datatype: "json",
                 success: function (result) {
                     console.log(result);
-
+                    var p = $("<p>本题共有<strong>"+result.length+"</strong>个选项，选择结果如下：</p>");
+                    $("#vote_info").append(p);
+                    $.each(result,function (index,item) {
+                       var result_item =  $(" <br>\n" +
+                            "                    <span>"+item.option+"（"+item.scale+"%)</span>\n" +
+                            "                <div class='progress'>\n" +
+                            "                    <div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: "+item.scale+"%;'>\n" +
+                            "                    </div>\n" +
+                            "                </div>");
+                       $("#process").append(result_item);
+                    })
                 }
 
             });

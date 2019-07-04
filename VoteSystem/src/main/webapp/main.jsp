@@ -138,11 +138,10 @@
             success: function (result) {
                 var userid =<%= session.getAttribute("userid")%>;
                 $.each(result, function (index, item) {
-                    //console.log(item.title)
-
-                    var join_button = "<a href='vote?id="+item.id+"'><button  type='button' class='btn btn-success btn-sm' isJoin='"+item.isJoin+"'>参与投票</button></a>&nbsp;&nbsp;&nbsp;&nbsp;";
-                    var edit_button = "<input type='button' value='修改' class='btn btn-primary btn-sm' onclick='update("+item.id+")' oper_user='"+item.oper_user+"' joinNum='"+item.joinNum+"'>&nbsp;&nbsp;&nbsp;&nbsp;";
-                    var del_button = "<bu#tton type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"confirm_del(" + item.id + "\)\">删除</button>";
+                    //console.log( item.create_time);
+                    var join_button = "<a href='vote?id="+item.id+"'><button  type='button'  class='btn btn-success btn-sm' isJoin='"+item.isJoin+"' isValidTime='"+item.isValidTime+"'>参与投票</button></a>&nbsp;&nbsp;&nbsp;&nbsp;";
+                    var edit_button = "<input type='button' value='不可修改' class='btn btn-primary btn-sm disabled' name='button' onclick='update("+item.id+")' oper_user='"+item.oper_user+"' joinNum='"+item.joinNum+"' isjoin='"+item.isJoin+"' isInvalid='"+item.isInvalid+"'>&nbsp;&nbsp;&nbsp;&nbsp;";
+                    var del_button = "<button type='button'  class='btn btn-danger btn-sm disabled' onclick='confirm_del(" + item.id + ")' oper_del='"+item.oper_user+"'>不可删除</button>";
                     var p = $("<p></p>").addClass("text-right").append(join_button).append(edit_button).append(del_button);
                     var span = "<span>共有<strong>"+item.optionNum+"</strong>个选项，网友已参加<strong>"+item.joinNum+"</strong>次投票</span>";
                     var panel_body = $("<div></div>").addClass("panel-body").append(span).append(p);
@@ -150,9 +149,18 @@
                     var panel_heading = $("<div></div>").addClass("panel-heading").append(panel_title);
                     var panel = $("<div></div>").addClass("panel panel-default panel-info").append(panel_heading).append(panel_body);
                     $("#content").append(panel);
-                    $("button[isJoin=true]").addClass("disabled");
+                    //参加过投票的禁止投票
                     $("button[isJoin=true]").empty().append("已投票");
-                    //$(" button[joinNum != 0]").addClass("disabled");
+                    $("button[isJoin=true]").addClass("disabled");
+                    //自己创建的投票且未投票过才允许修改
+                    $("input[oper_user=<%= session.getAttribute("userid")%>]").val("修改").removeClass("disabled");
+                    $("input[isjoin= true]").val("不可修改").addClass("disabled");
+                    $("input[joinNum!= 0]").val("不可修改").addClass("disabled");
+                    //超过一天显示超时，不能投票
+                    $("button[isValidTime= false]").empty().append("已超时");
+                    $("button[isValidTime= false]").addClass("disabled");
+                    $("button[oper_del = <%= session.getAttribute("userid")%>]").empty().removeClass("disabled").append("删除");
+
 
                 })
             }
@@ -246,6 +254,7 @@
             success: function (result) {
                 //console.log(result);
                 $('#vote_update').modal('hide');
+                window.location.replace("<%=basePath%>main.jsp");
 
             }
 

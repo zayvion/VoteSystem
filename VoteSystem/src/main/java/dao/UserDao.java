@@ -27,4 +27,13 @@ public interface UserDao {
      */
     int equalsUser(User user) throws SQLException;
 
+    /**
+     * 判断用户是否重复
+     *
+     * @param user
+     * @return true 表示重复 false表示未重复
+     * @throws SQLException
+     */
+    boolean isUserRepeat (User user)throws SQLException;
+
 }

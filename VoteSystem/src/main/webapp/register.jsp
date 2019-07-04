@@ -5,6 +5,8 @@
   Time: 19:45
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page isELIgnored="false" %>
 <html>
 <%
     String path = request.getContextPath();
@@ -56,6 +58,7 @@
                             <div class="form-top-left">
                                 <h3>请注册</h3>
                                 <p>输入用户名和密码完成注册:</p>
+                                <p id="msg" style="color: red">${msg}</p>
                             </div>
                             <div class="form-top-right">
                                 <i class="fa fa-lock"></i>
@@ -77,6 +80,11 @@
                                     <label class="sr-only" for="password2">Password</label>
                                     <input type="password" name="password2" placeholder="请再次输入密码..."
                                            class="form-password form-control" id="password2">
+                                </div>
+                                <div class="form-group">
+                                    <label class="sr-only" for="email">E-mail</label>
+                                    <input type="text" name="email" placeholder="请输入邮箱地址..."
+                                           class="form-email form-control" id="email">
                                 </div>
                                 <button type="submit" class="btn" id="sub">注册</button>
                             </form>
@@ -105,18 +113,49 @@
     $(function () {
 
         $("#sub").click(function () {
-
+            var uname =$("input[name='username']").val();
             var pwd = $("input[name='password']").val();
-
+            console.log(uname.length)
             var cpwd = $("input[name='password2']").val();
+            if (uname.length<5 || uname.length>13) {
+                $("#msg").empty();
+                $("#msg").append("用户名长度应在5-10位之间!");
+                $("input[name='username']").val("");
+                return false;
+            }
             if (pwd != cpwd) {
-                alert("两次密码不一致!");
+                $("#msg").empty();
+                $("#msg").append("两次密码不一致!");
+                $("input[name='password']").val("");
+                $("input[name='password2']").val("");
+                return false;
+            } else if (pwd == "" || cpwd == "") {
+                $("#msg").empty();
+                $("#msg").append("密码不能为空!");
+                $("input[name='password']").val("");
+                $("input[name='password2']").val("");
+                return false;
+            }else if(pwd.length<5 || pwd.length>13){
+                $("#msg").empty();
+                $("#msg").append("密码长度应在5-10位之间!");
                 $("input[name='password']").val("");
                 $("input[name='password2']").val("");
                 return false;
             }
+            var email = $("input[name='email']").val();
+            var regEmail = /^([a-zA-Z0-9_.-]+)@([da-z.-]+).([a-z.]{2,6})$/;
+            if (!regEmail.test(email)) {
+                $("#msg").empty();
+                $("#msg").append("邮箱格式不正确，请重新输入!");
+                $("input[name='email']").val("");
+                return false;
+            }  else {
+                return true;
+            }
+
         });
     });
+
 </script>
 
 </body>

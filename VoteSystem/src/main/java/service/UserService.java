@@ -12,6 +12,7 @@ import java.sql.SQLException;
 public interface UserService {
     /**
      * 增加用户
+     *
      * @param user
      * @throws SQLException
      */
@@ -19,9 +20,19 @@ public interface UserService {
 
     /**
      * 查找用户，比较用户名和密码
+     *
      * @param user
-     * @throws SQLException
      * @return id
+     * @throws SQLException
      */
     int equalsUser(User user) throws SQLException;
+
+    /**
+     * 判断用户是否重复
+     *
+     * @param user
+     * @return true 表示重复 false表示未重复
+     * @throws SQLException
+     */
+    boolean isUserRepeat(User user) throws SQLException;
 }

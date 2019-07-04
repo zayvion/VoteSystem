@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +30,11 @@ public class GetAllVoteItemServlet extends HttpServlet {
                 boolean isjoin = voteItemSubjectService.isJoin(subject.getId(), userid);
                 int optionNum = voteItemSubjectService.getOptionNum(subject.getId());
                 int joinNum = voteItemSubjectService.getJoinNum(subject.getId());
+                long effectiveTime = subject.geteffective_time().getTime();
+                long now = new Date().getTime();
+                if (effectiveTime>now){
+                    subject.setValidTime(true);
+                }
                 subject.setJoin(isjoin);
                 subject.setJoinNum(joinNum);
                 subject.setOptionNum(optionNum);

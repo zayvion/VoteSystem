@@ -55,6 +55,9 @@ public class VoteItemDaoImpl implements VoteItemDao {
             conn.rollback();
         } catch (NumberFormatException e) {
             e.printStackTrace();
+        }finally {
+            JDBCUtils.release(conn,ps1);
+            JDBCUtils.release(conn,ps2);
         }
 
     }
@@ -102,7 +105,8 @@ public class VoteItemDaoImpl implements VoteItemDao {
             e.printStackTrace();
             conn.rollback();
         } finally {
-            JDBCUtils.release(conn,ps);
+            JDBCUtils.release(conn,ps1);
+            JDBCUtils.release(conn,ps2);
         }
     }
 
@@ -129,7 +133,9 @@ public class VoteItemDaoImpl implements VoteItemDao {
             e.printStackTrace();
             conn.rollback();
         } finally {
-            JDBCUtils.release(conn,ps);
+            JDBCUtils.release(conn,ps1);
+            JDBCUtils.release(conn,ps2);
+            JDBCUtils.release(conn,ps3);
         }
     }
 }

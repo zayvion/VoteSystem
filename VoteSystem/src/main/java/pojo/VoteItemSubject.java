@@ -18,6 +18,63 @@ public class VoteItemSubject {
     private Date update_time;
     private int joinNum;
     private int optionNum;
+    private Date effective_time;
+    private boolean isValidTime;
+
+    @Override
+    public String toString() {
+        return "VoteItemSubject{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", type=" + type +
+                ", oper_user=" + oper_user +
+                ", isJoin=" + isJoin +
+                ", create_time=" + create_time +
+                ", update_time=" + update_time +
+                ", joinNum=" + joinNum +
+                ", optionNum=" + optionNum +
+                ", effective_time=" + effective_time +
+                ", isValidTime=" + isValidTime +
+                '}';
+    }
+
+    public VoteItemSubject(int id, String title, int type, int oper_user, boolean isJoin, Date create_time, Date update_time, int joinNum, int optionNum, Date effective_time, boolean isValidTime) {
+        this.id = id;
+        this.title = title;
+        this.type = type;
+        this.oper_user = oper_user;
+        this.isJoin = isJoin;
+        this.create_time = create_time;
+        this.update_time = update_time;
+        this.joinNum = joinNum;
+        this.optionNum = optionNum;
+        this.effective_time = effective_time;
+        this.isValidTime = isValidTime;
+    }
+
+    public boolean isValidTime() {
+        return isValidTime;
+    }
+
+    public void setValidTime(boolean validTime) {
+        isValidTime = validTime;
+    }
+
+    public Date getEffective_time() {
+        return effective_time;
+    }
+
+    public void setEffective_time(Date effective_time) {
+        this.effective_time = effective_time;
+    }
+
+    public Date geteffective_time() {
+        return effective_time;
+    }
+
+    public void seteffective_time(Date effective_time) {
+        this.effective_time = effective_time;
+    }
 
     public int getJoinNum() {
         return joinNum;
@@ -43,19 +100,6 @@ public class VoteItemSubject {
         isJoin = join;
     }
 
-
-    @Override
-    public String toString() {
-        return "VoteItemSubject{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", type=" + type +
-                ", oper_user=" + oper_user +
-                ", isJoin=" + isJoin +
-                ", create_time=" + create_time +
-                ", update_time=" + update_time +
-                '}';
-    }
 
     public int getId() {
         return id;
@@ -107,6 +151,19 @@ public class VoteItemSubject {
 
     public VoteItemSubject(int id) {
         this.id = id;
+    }
+
+
+    public VoteItemSubject(int id, String title, int type, int oper_user, boolean isJoin, Date create_time, Date update_time, int joinNum, int optionNum, boolean isInvalid) {
+        this.id = id;
+        this.title = title;
+        this.type = type;
+        this.oper_user = oper_user;
+        this.isJoin = isJoin;
+        this.create_time = create_time;
+        this.update_time = update_time;
+        this.joinNum = joinNum;
+        this.optionNum = optionNum;
     }
 
     public VoteItemSubject(String title, int type, Date create_time, Date update_time) {

@@ -29,4 +29,11 @@ public class UserServiceImpl implements UserService {
         int id = userDao.equalsUser(user);
         return id;
     }
+
+    @Override
+    public boolean isUserRepeat(User user) throws SQLException {
+        UserDao userDao = new UserDaoImpl();
+        boolean isrepeat = userDao.isUserRepeat(user);
+        return isrepeat;
+    }
 }

@@ -1,5 +1,7 @@
 package pojo;
 
+import java.util.Date;
+
 /**
  * @Auther: zayvion
  * @Date: 2019-07-03 18:22
@@ -9,7 +11,19 @@ public class VoteResult {
     private int sid;
     private int oid;
     private int num;
-    private double scale;
+    private int scale;
+    private String option;
+    private int joinNum;
+    private int optionNum;
+    private Date effective_time;
+
+    public Date getEffective_time() {
+        return effective_time;
+    }
+
+    public void setEffective_time(Date effective_time) {
+        this.effective_time = effective_time;
+    }
 
     public int getSid() {
         return sid;
@@ -35,12 +49,36 @@ public class VoteResult {
         this.num = num;
     }
 
-    public double getScale() {
+    public int getScale() {
         return scale;
     }
 
-    public void setScale(double scale) {
+    public void setScale(int scale) {
         this.scale = scale;
+    }
+
+    public String getOption() {
+        return option;
+    }
+
+    public void setOption(String option) {
+        this.option = option;
+    }
+
+    public int getJoinNum() {
+        return joinNum;
+    }
+
+    public void setJoinNum(int joinNum) {
+        this.joinNum = joinNum;
+    }
+
+    public int getOptionNum() {
+        return optionNum;
+    }
+
+    public void setOptionNum(int optionNum) {
+        this.optionNum = optionNum;
     }
 
     public VoteResult() {

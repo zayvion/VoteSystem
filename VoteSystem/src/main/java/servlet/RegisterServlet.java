@@ -22,14 +22,23 @@ public class RegisterServlet extends HttpServlet {
         UserService userService = new UserServiceImpl();
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        String email = req.getParameter("email");
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
+        user.setEmail(email);
         try {
-            int id = userService.addUser(user).intValue();
-            req.getSession().setAttribute("userid",id);
-            req.setAttribute("msg", "注册成功，请登录！");
-            req.getRequestDispatcher("index.jsp").forward(req,resp);
+            boolean isRepeat = userService.isUserRepeat(user);
+            if (isRepeat){
+                req.setAttribute("msg", "用户名重复，请重新注册其他用户名！");
+                req.getRequestDispatcher("register.jsp").forward(req,resp);
+            }else{
+                int id = userService.addUser(user).intValue();
+                req.getSession().setAttribute("userid",id);
+                req.setAttribute("msg", "注册成功，请登录！");
+                req.getRequestDispatcher("index.jsp").forward(req,resp);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("插入失败！");
