@@ -3,6 +3,7 @@ package service;
 import pojo.User;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @Auther: zayvion
@@ -35,4 +36,36 @@ public interface UserService {
      * @throws SQLException
      */
     boolean isUserRepeat(User user) throws SQLException;
+
+    /**
+     * 取出所有用户
+     *
+     * @return List<User>
+     */
+    List<User> getAllusers() throws SQLException;
+
+    /**
+     * 取出一个用户
+     *
+     * @return User
+     * @throws SQLException
+     */
+    User getUser(int id) throws SQLException;
+    /**
+     * 修改用户
+     *
+     * @param user
+     * @throws SQLException
+     */
+    void updateUser(User user) throws SQLException;
+
+    /**
+     * 删除（禁用）账户
+     *
+     * @param id
+     * @throws SQLException
+     */
+    void delUser(int id) throws SQLException;
+
+
 }

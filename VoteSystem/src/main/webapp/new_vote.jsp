@@ -6,7 +6,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page isELIgnored="false" %>
-<html>
+<meta name="viewport" content="width=device-width, initial-scale=1",maximum-scale=1,user-scalable=no">
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -28,7 +28,8 @@
 
         a {
             padding-left: 10px;
-            text-decoration: underline;
+            text-decoration: none;
+            color:inherit;
             cursor: pointer
         }
     </style>
@@ -44,7 +45,7 @@
 
     </nav>
     <div class="col-lg-4">
-        <ul class="nav nav-pills nav-stacked">
+        <ul class="nav nav-pills nav-stacked" id="menu">
             <li role="presentation"><a href="main.jsp">投票管理</a></li>
             <li role="presentation" class="active"><a href="new_vote.jsp">新建投票</a></li>
         </ul>
@@ -75,8 +76,8 @@
                     </div>
                     <div class="input-group">
                         <label>结束时间</label><br>
-                        <div class="input-group date form_datetime "  data-date-format=" yyyy MM dd - HH:ii p">
-                            <input class="form-control"  id="endTime" type="text" value="" readonly="">
+                        <div class="input-group date form_datetime " data-date-format=" yyyy MM dd - HH:ii p">
+                            <input class="form-control" id="endTime" type="text" value="" readonly="">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
@@ -106,55 +107,59 @@
 <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
 <script src="assets/js/bootstrap-datetimepicker.zh-CN.js"></script>
 <script>
-    $(
-        function () {
-            $("#addoption").click(function () {
-                $("#options").append("<input type=\"text\" class=\"form-control\" placeholder=\"请输入选项\" aria-describedby=\"sizing-addon1\" name=\"option\">");
-            });
-            $("#submit").click(function () {
+    var uid = <%= session.getAttribute("userid")%>;
+    $(function () {
+        //为管理员添加用户管理
+        if (uid == 1) {
+            $("#menu").append("  <li role='presentation'><a href='manage_user.jsp'>用户管理</a></li>");
+        }
+        $("#addoption").click(function () {
+            $("#options").append("<input type=\"text\" class=\"form-control\" placeholder=\"请输入选项\" aria-describedby=\"sizing-addon1\" name=\"option\">");
+        });
+        $("#submit").click(function () {
 
-                var options = [];
-                $("input[name='option']").each(function () {
-                    options.push($(this).val());
-                })
-                //console.log(options);
-
-                var title = $("#title").val().toString();
-
-                var endTime = $("#endTime").val().toString();
-
-                votetype = $("input[name='vote_type'][checked]").val();
-
-                let serialize = $("#form").serializeArray();
-                var votetype = serialize[0].value;
-                //获取主机名和端口
-                var host = window.document.location.origin;
-                $.ajax({
-                    url: "addvote",
-                    data: {"title": title, "endTime": endTime, "type": votetype, "options": options.toString()},
-                    type: "post",
-                    success: function (result) {
-                        alert("添加成功！");
-                        window.location.replace(host + "/main.jsp");
-                    },
-                    error: function (e) {
-                        alert("发生错误，添加失败！")
-                    }
-                })
-                return true;
+            var options = [];
+            $("input[name='option']").each(function () {
+                options.push($(this).val());
             })
+            //console.log(options);
+
+            var title = $("#title").val().toString();
+
+            var endTime = $("#endTime").val().toString();
+
+            votetype = $("input[name='vote_type'][checked]").val();
+
+            let serialize = $("#form").serializeArray();
+            var votetype = serialize[0].value;
+            //获取主机名和端口
+            var host = window.document.location.origin;
+            $.ajax({
+                url: "addvote",
+                data: {"title": title, "endTime": endTime, "type": votetype, "options": options.toString()},
+                type: "post",
+                success: function (result) {
+                    alert("添加成功！");
+                    window.location.replace(host + "/main.jsp");
+                },
+                error: function (e) {
+                    alert("发生错误，添加失败！")
+                }
+            })
+            return true;
         })
+    })
 </script>
 <script type="text/javascript">
     $('.form_datetime').datetimepicker({
-        minView : "day", //  选择时间时，最小可以选择到那层；默认是‘hour’也可用0表示
-        language : 'zh-CN', // 语言
-        initialDate:new Date(),//默认值
-        autoclose : true, //  true:选择时间后窗口自动关闭
-        format : 'yyyy-mm-dd hh:00:00', // 文本框时间格式，设置为0,最后时间格式为2017-03-23 17:00:00
-        todayBtn : true, // 如果此值为true 或 "linked"，则在日期时间选择器组件的底部显示一个 "Today" 按钮用以选择当前日期。
-        startDate : new Date() ,  // 窗口可选时间从今天开始
-    }
+            minView: "day", //  选择时间时，最小可以选择到那层；默认是‘hour’也可用0表示
+            language: 'zh-CN', // 语言
+            initialDate: new Date(),//默认值
+            autoclose: true, //  true:选择时间后窗口自动关闭
+            format: 'yyyy-mm-dd hh:00:00', // 文本框时间格式，设置为0,最后时间格式为2017-03-23 17:00:00
+            todayBtn: true, // 如果此值为true 或 "linked"，则在日期时间选择器组件的底部显示一个 "Today" 按钮用以选择当前日期。
+            startDate: new Date(),  // 窗口可选时间从今天开始
+        }
     );
 </script>
 </body>

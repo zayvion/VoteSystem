@@ -7,6 +7,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page isELIgnored="false" %>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1",maximum-scale=1,user-scalable=no">
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -27,6 +28,7 @@
         a{
             text-decoration: none;
             color:inherit;
+            cursor: pointer
         }
     </style>
 </head>
@@ -90,7 +92,7 @@
         </div>
     </div>
 </div>
-<div class="container">
+<div class="container container-fluid">
     <nav class="navbar  navbar-fixed-top navbar-default">
         <div class="container">
             <span id="welcome"> 欢迎您：<strong>${sessionScope.userFlag}</strong></span>
@@ -99,7 +101,7 @@
             </c:if>
     </nav>
     <div class="col-lg-4">
-        <ul class="nav nav-pills nav-stacked">
+        <ul class="nav nav-pills nav-stacked" id="menu">
             <li role="presentation" class="active"><a href="main.jsp">投票管理</a></li>
             <li role="presentation"><a href="new_vote.jsp">新建投票</a></li>
         </ul>
@@ -129,7 +131,13 @@
 <script src="assets/js/jquery-1.11.1.js"></script>
 <script src="assets/bootstrap/js/bootstrap.js"></script>
 <script>
+    var uid = <%= session.getAttribute("userid")%>;
     $(function () {
+        //为管理员添加用户管理
+        if (uid== 1) {
+            $("#menu").append("  <li role='presentation'><a href='manage_user.jsp'>用户管理</a></li>");
+        }
+
         $.ajax({
             url: "getall",
             data: "userid="+<%=session.getAttribute("userid")%>,

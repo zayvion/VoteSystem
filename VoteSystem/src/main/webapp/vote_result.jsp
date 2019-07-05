@@ -7,6 +7,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page isELIgnored="false" %>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -23,8 +24,9 @@
         }
         a{
             padding-left:10px ;
-            text-decoration:underline;
-            cursor: pointer
+            text-decoration:none;
+            cursor: pointer;
+            color: inherit;
         }
         .progress-bar{
             min-width: 2em;
@@ -41,7 +43,7 @@
             </c:if>
     </nav>
     <div class="col-lg-4">
-        <ul class="nav nav-pills nav-stacked">
+        <ul class="nav nav-pills nav-stacked" id="menu">
             <li role="presentation" class="active"><a href="main.jsp">投票管理</a></li>
             <li role="presentation"><a href="new_vote.jsp">新建投票</a></li>
         </ul>
@@ -53,7 +55,7 @@
             </div>
             <div class="panel-body" >
                 <label style="font-size: 25px">${title}</label><br>
-                <label>本题截止投票时间：${endTime}</label>
+                <label id="endTime">本题截止投票时间：${endTime}</label>
                 <div id="vote_info"> </div>
                 <%-- <p>共有<strong>2</strong>个选项，已有<strong>2</strong>个网友参与</p>--%>
                 <div id="process"></div>
@@ -77,8 +79,12 @@
 <script src="assets/js/jquery-1.11.1.js"></script>
 <script src="assets/bootstrap/js/bootstrap.js"></script>
 <script>
-    $(
-        function () {
+    $(function () {
+        var uid = <%= session.getAttribute("userid")%>;
+            //为管理员添加用户管理
+            if (uid== 1) {
+                $("#menu").append("  <li role='presentation'><a href='manage_user.jsp'>用户管理</a></li>");
+            }
             let href = window.location.href;
             let indexOf = href.indexOf("=");
             var id = href.substring(indexOf+1,href.length)

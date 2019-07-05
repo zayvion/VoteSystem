@@ -6,6 +6,7 @@ import pojo.User;
 import service.UserService;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @Auther: zayvion
@@ -35,5 +36,31 @@ public class UserServiceImpl implements UserService {
         UserDao userDao = new UserDaoImpl();
         boolean isrepeat = userDao.isUserRepeat(user);
         return isrepeat;
+    }
+
+    @Override
+    public List<User> getAllusers() throws SQLException {
+        UserDao userDao = new UserDaoImpl();
+        List<User> list = userDao.getAllusers();
+        return list;
+    }
+
+    @Override
+    public User getUser(int id) throws SQLException {
+        UserDao userDao = new UserDaoImpl();
+        User user = userDao.getUser(id);
+        return user;
+    }
+
+    @Override
+    public void updateUser(User user) throws SQLException {
+        UserDao userDao = new UserDaoImpl();
+        userDao.updateUser(user);
+    }
+
+    @Override
+    public void delUser(int id) throws SQLException {
+        UserDao userDao = new UserDaoImpl();
+        userDao.delUser(id);
     }
 }

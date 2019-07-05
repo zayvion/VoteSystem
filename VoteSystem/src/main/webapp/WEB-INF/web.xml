@@ -16,6 +16,14 @@
         <filter-name>isLoginFilter</filter-name>
         <filter-class>filter.isLoginFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>filter.AdminFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/manage_user.jsp</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>CodeFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -35,6 +43,38 @@
     <filter-mapping>
         <filter-name>isLoginFilter</filter-name>
         <url-pattern>/vote_oper.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>isLoginFilter</filter-name>
+        <url-pattern>/addresult</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>isLoginFilter</filter-name>
+        <url-pattern>/vote</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>isLoginFilter</filter-name>
+        <url-pattern>/analyze</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>isLoginFilter</filter-name>
+        <url-pattern>/getusers</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>isLoginFilter</filter-name>
+        <url-pattern>/del</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>isLoginFilter</filter-name>
+        <url-pattern>/getall</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>isLoginFilter</filter-name>
+        <url-pattern>/update</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>isLoginFilter</filter-name>
+        <url-pattern>/updateuser</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
@@ -84,6 +124,18 @@
         <servlet-name>AnalyzeDataServlet</servlet-name>
         <servlet-class>servlet.AnalyzeDataServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetAllUsersServlet</servlet-name>
+        <servlet-class>servlet.GetAllUsersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetUserServlet</servlet-name>
+        <servlet-class>servlet.GetUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdataUserServlet</servlet-name>
+        <servlet-class>servlet.UpdataUserServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -131,6 +183,18 @@
     <servlet-mapping>
         <servlet-name>AnalyzeDataServlet</servlet-name>
         <url-pattern>/analyze</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetAllUsersServlet</servlet-name>
+        <url-pattern>/getusers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetUserServlet</servlet-name>
+        <url-pattern>/getuser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdataUserServlet</servlet-name>
+        <url-pattern>/updateuser</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>
