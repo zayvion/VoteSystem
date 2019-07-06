@@ -77,9 +77,9 @@
                     <div class="input-group">
                         <label>结束时间</label><br>
                         <div class="input-group date form_datetime " data-date-format=" yyyy MM dd - HH:ii p">
-                            <input class="form-control" id="endTime" type="text" value="" readonly="">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                <input class="form-control" id="endTime" type="text" value="" readonly="">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
                     </div>
                     <div class="input-group" id="options">

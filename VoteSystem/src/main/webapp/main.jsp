@@ -162,8 +162,8 @@
                     $("button[isJoin=true]").addClass("disabled");
                     //自己创建的投票且未投票过才允许修改
                     $("input[oper_user=<%= session.getAttribute("userid")%>]").val("修改").removeClass("disabled");
-                    $("input[isjoin= true]").val("不可修改").addClass("disabled");
-                    $("input[joinNum!= 0]").val("不可修改").addClass("disabled");
+                    $(".text-right input[isjoin= true]").val("不可修改").addClass("disabled");
+                    $(".text-right input[joinNum!= 0]").val("不可修改").addClass("disabled");
                     //超过一天显示超时，不能投票
                     $("button[isValidTime= false]").empty().append("已超时");
                     $("button[isValidTime= false]").addClass("disabled");
@@ -214,7 +214,7 @@
             success: function (result) {
                 //console.log(result);
                 $("input[name=vote_title]").val(result.title);
-                $("#vote_update input[name=vote_type]").val([result.type]);
+                $("input[name=vote_type]").val([result.type]).attr('checked', 'checked');
                 $.each(result.options,function (index,item) {
                     $("#vote_options").append("<input type='text' name='item' class='form-control' value="+item.option+" oid='"+item.id+"'><br>")
                 })
@@ -247,17 +247,17 @@
             arr[i]=data;
 
             }
-        console.log(arr);
+        console.log($("input[name='vote_type']:checked").val());
         $.ajax({
             url: "update",
             data: {
                 "length":num,
                 "id":id,
                 "title":$("#vote_title_input").val(),
-                "type":$("input[name=vote_type]:checked").val(),
+                "type":$("input[name='vote_type']:checked").val(),
                 "options":arr,
             },
-            type: "post",
+            type: "get",
             datatype: "json",
             success: function (result) {
                 //console.log(result);
