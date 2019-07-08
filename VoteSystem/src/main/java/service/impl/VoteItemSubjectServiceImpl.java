@@ -111,4 +111,11 @@ public class VoteItemSubjectServiceImpl implements VoteItemSubjectService {
         }
         return num;
     }
+
+    @Override
+    public List<VoteItemSubject> getSearchVoteItem(int id, String condition) throws SQLException {
+        VoteItemSubjectDao voteItemSubjectDao = new VoteItemSubjectDaoImpl();
+        List<VoteItemSubject> list = voteItemSubjectDao.getSearchVoteItem(id, condition);
+        return list;
+    }
 }

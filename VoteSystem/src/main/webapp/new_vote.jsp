@@ -133,14 +133,14 @@
             let serialize = $("#form").serializeArray();
             var votetype = serialize[0].value;
             //获取主机名和端口
-            var host = window.document.location.origin;
+            var host = window.document.location.hostname
             $.ajax({
                 url: "addvote",
                 data: {"title": title, "endTime": endTime, "type": votetype, "options": options.toString()},
                 type: "post",
                 success: function (result) {
                     alert("添加成功！");
-                    window.location.replace(host + "/main.jsp");
+                    window.location.replace("<%=basePath%>"+ "main.jsp");
                 },
                 error: function (e) {
                     alert("发生错误，添加失败！")

@@ -30,6 +30,9 @@
             color:inherit;
             cursor: pointer
         }
+        #search_btn{
+            height: 34px;
+        }
     </style>
 </head>
 <body>
@@ -107,6 +110,12 @@
         </ul>
     </div>
     <div class="col-lg-8">
+            <div class="input-group">
+                <input type="text" id="search_input" class="form-control" aria-label="Text input with multiple buttons" placeholder="请输入关键字" style="width: 40%;float: right">
+                <div class="input-group-btn">
+                    <button type="button" id="search_btn" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                </div>
+            </div><!-- /.input-group -->
         <div id="content"></div>
         <%--<div class="panel panel-default panel-info">
             <div class="panel-heading">
@@ -292,7 +301,51 @@
         })
     }
 
+$("#search_btn").click(function () {
+    if ($("#search_input").val() ==''){
+        window.location.replace("<%= basePath+"main.jsp"%>");
+    } else {
+        $.ajax({
+            url: "search",
+            data: {
+                "userid":<%=session.getAttribute("userid")%>,
+                "condition":$("#search_input").val(),
+            },
+            type: "post",
+            datatype: "json",
+            success: function (result) {
+                $("#content").empty();
+                var userid =<%= session.getAttribute("userid")%>;
+                console.log("abc"+result);
+                $.each(result, function (index, item) {
+                    var join_button = "<a href='vote?id="+item.id+"'><button  type='button'  class='btn btn-success btn-sm' isJoin='"+item.isJoin+"' isValidTime='"+item.isValidTime+"'>参与投票</button></a>&nbsp;&nbsp;&nbsp;&nbsp;";
+                    var edit_button = "<input type='button' value='不可修改' class='btn btn-primary btn-sm disabled' name='button' onclick='update("+item.id+")' oper_user='"+item.oper_user+"' joinNum='"+item.joinNum+"' isjoin='"+item.isJoin+"' isInvalid='"+item.isInvalid+"'>&nbsp;&nbsp;&nbsp;&nbsp;";
+                    var del_button = "<button type='button'  class='btn btn-danger btn-sm disabled' onclick='confirm_del(" + item.id + ")' oper_del='"+item.oper_user+"'>不可删除</button>";
+                    var p = $("<p></p>").addClass("text-right").append(join_button).append(edit_button).append(del_button);
+                    var span = "<span>共有<strong>"+item.optionNum+"</strong>个选项，网友已参加<strong>"+item.joinNum+"</strong>次投票</span>";
+                    var panel_body = $("<div></div>").addClass("panel-body").append(span).append(p);
+                    var panel_title = $("<h3></h3>").addClass("panel-title").append("<a href='result?id="+item.id+"'"+">"+item.title+"</a>");
+                    var panel_heading = $("<div></div>").addClass("panel-heading").append(panel_title);
+                    var panel = $("<div></div>").addClass("panel panel-default panel-info").append(panel_heading).append(panel_body);
+                    $("#content").append(panel);
+                    //参加过投票的禁止投票
+                    $("button[isJoin=true]").empty().append("已投票");
+                    $("button[isJoin=true]").addClass("disabled");
+                    //自己创建的投票且未投票过才允许修改
+                    $("input[oper_user=<%= session.getAttribute("userid")%>]").val("修改").removeClass("disabled");
+                    $(".text-right input[isjoin= true]").val("不可修改").addClass("disabled");
+                    $(".text-right input[joinNum!= 0]").val("不可修改").addClass("disabled");
+                    //超过一天显示超时，不能投票
+                    $("button[isValidTime= false]").empty().append("已超时");
+                    $("button[isValidTime= false]").addClass("disabled");
+                    $("button[oper_del = <%= session.getAttribute("userid")%>]").empty().removeClass("disabled").append("删除");
 
+
+                })
+            }
+        })
+    }
+});
 
 </script>
 

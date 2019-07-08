@@ -36,4 +36,12 @@ public interface VoteItemSubjectDao {
      * @throws SQLException
      */
     VoteItemSubject getVoteItemSubject(VoteItemSubject voteItemSubject) throws SQLException;
+
+    /**
+     * 按条件取出对应Subject
+     * @param id
+     * @return List<VoteItemSubject>
+     * @throws SQLException
+     */
+    List<VoteItemSubject> getSearchVoteItem(int id, String condition) throws SQLException;
 }

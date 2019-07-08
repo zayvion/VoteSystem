@@ -121,4 +121,46 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
         }
         return voteItemSubject;
     }
+
+    @Override
+    public List<VoteItemSubject> getSearchVoteItem(int id, String condition) throws SQLException {
+        conn = JDBCUtils.getConn();
+        int num = 0;
+        List<VoteItemSubject> list = new ArrayList<>();
+        String sql = "SELECT * FROM `t_vote_subject` WHERE `title` LIKE  ?  ORDER BY `id` DESC LIMIT 0,1000";
+        String sql2 = "SELECT COUNT(*) AS `num` FROM t_join_vote WHERE `u_id`=? and `s_id`= ?";
+        ps = conn.prepareStatement(sql);
+        ps2 = conn.prepareStatement(sql2);
+        ps.setString(1,"%"+condition+"%");
+
+        try {
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int idd = rs.getInt("id");
+                String title = rs.getString("title");
+                int type = rs.getInt("type");
+                int userid = rs.getInt("oper_user");
+                Timestamp create_time = rs.getTimestamp("create_date");
+                Timestamp update_time = rs.getTimestamp("update_date");
+                Timestamp end_time = rs.getTimestamp("end_time");
+
+                VoteItemSubject subject = new VoteItemSubject();
+                subject.setId(idd);
+                subject.setTitle(title);
+                subject.setType(type);
+                subject.setOper_user(userid);
+                subject.setCreate_time(create_time);
+                subject.setUpdate_time(update_time);
+                subject.seteffective_time(end_time);
+                list.add(subject);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.release(conn, ps,rs);
+        }
+        return list;
+    }
 }

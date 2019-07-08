@@ -89,7 +89,7 @@
                                 </div>
                                 <button type="submit" class="btn" id="sub">注册</button>
                             </form>
-                            <a class="text-center center-block" href="/">去登录</a>
+                            <a class="text-center center-block" href="${pageContext.request.contextPath}/index.jsp">去登录</a>
                         </div>
                     </div>
                 </div>

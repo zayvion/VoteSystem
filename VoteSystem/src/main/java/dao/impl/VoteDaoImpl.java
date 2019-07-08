@@ -22,7 +22,7 @@ public class VoteDaoImpl implements VoteDao {
     @Override
     public void vote(Vote vote) throws SQLException {
         conn = JDBCUtils.getConn();
-        String sql = "INSERT INTO `db_vote`.`t_join_vote`( `u_id`, `s_id`, `o_id`) VALUES (?, ?, ?);";
+        String sql = "INSERT INTO `t_join_vote`( `u_id`, `s_id`, `o_id`) VALUES (?, ?, ?);";
 
         try {
             ps = conn.prepareStatement(sql);

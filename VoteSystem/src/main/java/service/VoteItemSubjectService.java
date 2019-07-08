@@ -61,5 +61,13 @@ public interface VoteItemSubjectService {
      */
     int getOptionNum (int sid) throws SQLException;
 
+    /**
+     * 按条件取出对应Subject
+     * @param id
+     * @return List<VoteItemSubject>
+     * @throws SQLException
+     */
+    List<VoteItemSubject> getSearchVoteItem(int id, String condition) throws SQLException;
+
 
 }

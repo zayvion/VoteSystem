@@ -75,7 +75,7 @@
         <configuration>
           <!--端口号 -->
           <port>8080</port>
-          <path>/</path>
+          <path>/vote</path>
         </configuration>
       </plugin>
     </plugins>
