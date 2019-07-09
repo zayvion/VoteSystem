@@ -32,7 +32,7 @@ public class SearchServlet extends HttpServlet {
                 boolean isjoin = voteItemSubjectService.isJoin(subject.getId(), userid);
                 int optionNum = voteItemSubjectService.getOptionNum(subject.getId());
                 int joinNum = voteItemSubjectService.getJoinNum(subject.getId());
-                long effectiveTime = subject.geteffective_time().getTime();
+                long effectiveTime = subject.getEffective_time().getTime();
                 long now = new Date().getTime();
                 if (effectiveTime>now){
                     subject.setValidTime(true);

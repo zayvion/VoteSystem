@@ -20,29 +20,22 @@ public class UpdataUserServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        String method = req.getParameter("method");
         UserService userService = new UserServiceImpl();
         User user = new User();
         //修改用户信息
-        if (("information").equals(method)){
-            String username = req.getParameter("username");
-            String password = req.getParameter("password");
-            String email = req.getParameter("email");
-            user.setUsername(username);
-            user.setPassword(password);
-            user.setEmail(email);
-            user.setId(id);
-            try {
-                userService.updateUser(user);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }else if (("del").equals(method)){
-            try {
-                userService.delUser(id);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        String email = req.getParameter("email");
+        int status = Integer.parseInt(req.getParameter("status"));
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setId(id);
+        user.setStatus(status);
+        try {
+            userService.updateUser(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

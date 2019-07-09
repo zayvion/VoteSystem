@@ -82,9 +82,8 @@ public class VoteItemDaoImpl implements VoteItemDao {
     @Override
     public void updateVoteItem(VoteItemSubject voteItemSubject,List<VoteOption> options) throws SQLException {
         conn = JDBCUtils.getConn();
-        Long id =0l;
         conn.setAutoCommit(false);
-        String sql1 ="UPDATE `t_vote_subject` SET `title` = ?, `type` = ? ,`oper_user`= ?,`update_date` = ? WHERE id = ? ";
+        String sql1 ="UPDATE `t_vote_subject` SET `title` = ?, `type` = ? ,`oper_user`= ?,`update_date` = ? ,`end_time` =? WHERE id = ? ";
         String sql2 ="UPDATE `t_vote_option` SET `option` = ? WHERE id = ?";
         try {
             ps1 = conn.prepareStatement(sql1);
@@ -92,15 +91,16 @@ public class VoteItemDaoImpl implements VoteItemDao {
             ps1.setInt(2, voteItemSubject.getType());
             ps1.setInt(3,voteItemSubject.getOper_user());
             ps1.setTimestamp(4, (Timestamp) voteItemSubject.getUpdate_time());
-            ps1.setInt(5, voteItemSubject.getId());
+            ps1.setTimestamp(5, (Timestamp) voteItemSubject.getEffective_time());
+            ps1.setInt(6, voteItemSubject.getId());
             ps1.executeUpdate();
+            ps2 = conn.prepareStatement(sql2);
             for(VoteOption option : options){
-                ps2 = conn.prepareStatement(sql2);
                 ps2.setString(1, option.getOption());
                 ps2.setInt(2,option.getId());
                 ps2.executeUpdate();
-                conn.commit();
             }
+            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             conn.rollback();

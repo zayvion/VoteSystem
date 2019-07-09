@@ -45,7 +45,7 @@ public class AddVoteServlet extends HttpServlet {
         subject.setTitle(title);
         subject.setType(type);
         subject.setOper_user(userid);
-        subject.seteffective_time(endTime);
+        subject.setEffective_time(endTime);
          try{
             VoteItemSubjectService voteItemSubjectService = new VoteItemSubjectServiceImpl();
             VoteOptionService voteOptionService = new VoteOptionServiceImpl();

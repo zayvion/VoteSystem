@@ -23,7 +23,7 @@ public class isLoginFilter implements Filter {
         if (userFlag != null) {
             chain.doFilter(req, resp);
         }else {
-            response.sendRedirect("/");
+            response.sendRedirect("/vote");
         }
 
     }

@@ -54,10 +54,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">投票类型</label>
+                        <label class="col-sm-2 control-label" >投票类型</label>
                         <div class="col-sm-10">
-                            <input type="radio" class="checkbox-inline" name="vote_type" value="0">单选
-                            <input type="radio" class="checkbox-inline" name="vote_type" value="1">多选
+                            <input type="radio" class="checkbox-inline" name="vote_type_update" value="0">单选
+                            <input type="radio" class="checkbox-inline" name="vote_type_update" value="1">多选
                         </div>
                     </div>
                     <div class="form-group">
@@ -157,7 +157,7 @@
                 $.each(result, function (index, item) {
                     //console.log( item.create_time);
                     var join_button = "<a href='vote?id="+item.id+"'><button  type='button'  class='btn btn-success btn-sm' isJoin='"+item.isJoin+"' isValidTime='"+item.isValidTime+"'>参与投票</button></a>&nbsp;&nbsp;&nbsp;&nbsp;";
-                    var edit_button = "<input type='button' value='不可修改' class='btn btn-primary btn-sm disabled' name='button' onclick='update("+item.id+")' oper_user='"+item.oper_user+"' joinNum='"+item.joinNum+"' isjoin='"+item.isJoin+"' isInvalid='"+item.isInvalid+"'>&nbsp;&nbsp;&nbsp;&nbsp;";
+                    var edit_button = "<input type='button' value='不可修改' class='btn btn-primary btn-sm disabled' name='button' onclick='update("+item.id+")' oper_user='"+item.oper_user+"' joinNum='"+item.joinNum+"' isjoin='"+item.isJoin+"' isInvalid='"+item.isValidTime+"'>&nbsp;&nbsp;&nbsp;&nbsp;";
                     var del_button = "<button type='button'  class='btn btn-danger btn-sm disabled' onclick='confirm_del(" + item.id + ")' oper_del='"+item.oper_user+"'>不可删除</button>";
                     var p = $("<p></p>").addClass("text-right").append(join_button).append(edit_button).append(del_button);
                     var span = "<span>共有<strong>"+item.optionNum+"</strong>个选项，网友已参加<strong>"+item.joinNum+"</strong>次投票</span>";
@@ -173,10 +173,15 @@
                     $("input[oper_user=<%= session.getAttribute("userid")%>]").val("修改").removeClass("disabled");
                     $(".text-right input[isjoin= true]").val("不可修改").addClass("disabled");
                     $(".text-right input[joinNum!= 0]").val("不可修改").addClass("disabled");
-                    //超过一天显示超时，不能投票
+                    $(".text-right input[isinvalid=false]").val("不可修改").addClass("disabled");
                     $("button[isValidTime= false]").empty().append("已超时");
                     $("button[isValidTime= false]").addClass("disabled");
-                    $("button[oper_del = <%= session.getAttribute("userid")%>]").empty().removeClass("disabled").append("删除");
+                    if($("button[oper_del = <%= session.getAttribute("userid")%>]")){
+                        $("button[oper_del = <%= session.getAttribute("userid")%>]").empty().removeClass("disabled").append("删除");
+                    }
+                    if(1 == <%= session.getAttribute("userid")%>){
+                        $(".btn-danger ").empty().removeClass("disabled").append("删除");
+                    }
 
 
                 })
@@ -223,7 +228,7 @@
             success: function (result) {
                 //console.log(result);
                 $("input[name=vote_title]").val(result.title);
-                $("input[name=vote_type]").val([result.type]).attr('checked', 'checked');
+                $("input[name=vote_type_update]").val([result.type]).attr('checked', 'checked');
                 $.each(result.options,function (index,item) {
                     $("#vote_options").append("<input type='text' name='item' class='form-control' value="+item.option+" oid='"+item.id+"'><br>")
                 })
@@ -240,6 +245,7 @@
     function update(id) {
         cleanOptions();
         loadData(id);
+
         $('#vote_update').modal().show();
     }
 
@@ -262,11 +268,11 @@
             data: {
                 "length":num,
                 "id":id,
-                "title":$("#vote_title_input").val(),
-                "type":$("input[name='vote_type']:checked").val(),
+                "title":$("#vote_title_input").val().toString(),
+                "type":$("input[name='vote_type_update']:checked").val(),
                 "options":arr,
             },
-            type: "get",
+            type: "post",
             datatype: "json",
             success: function (result) {
                 //console.log(result);
@@ -338,7 +344,12 @@ $("#search_btn").click(function () {
                     //超过一天显示超时，不能投票
                     $("button[isValidTime= false]").empty().append("已超时");
                     $("button[isValidTime= false]").addClass("disabled");
-                    $("button[oper_del = <%= session.getAttribute("userid")%>]").empty().removeClass("disabled").append("删除");
+                    if($("button[oper_del = <%= session.getAttribute("userid")%>]")){
+                        $("button[oper_del = <%= session.getAttribute("userid")%>]").empty().removeClass("disabled").append("删除");
+                    }
+                    if(1 == <%= session.getAttribute("userid")%>){
+                        $(".btn-danger ").empty().removeClass("disabled").append("删除");
+                    }
 
 
                 })

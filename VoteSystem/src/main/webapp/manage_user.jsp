@@ -68,6 +68,13 @@
                             <span class="help-block"></span>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >用户状态</label>
+                        <div class="col-sm-10">
+                            <input type="radio" class="checkbox-inline" name="user_status" value="1">激活
+                            <input type="radio" class="checkbox-inline" name="user_status" value="0">禁用
+                        </div>
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         <button type="button" class="btn btn-primary" id="save_btn">保存</button>
@@ -77,24 +84,7 @@
         </div>
     </div>
 </div>
-<%--    确认删除模态框--%>
-<div class="modal fade" tabindex="-1" role="dialog"id="confirm_del">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">确认删除</h4>
-            </div>
-            <div class="modal-body">
-                <span>确认将此用户删除(禁用)吗？</span>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-danger" id="del_button">删除</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 <div class="container">
     <nav class="navbar  navbar-fixed-top navbar-default">
         <div class="container">
@@ -147,13 +137,11 @@
                 $.each(result, function (index, item) {
                     var status = item.status == 1 ? "正常" : "删除"
                         var content = $("<tr> <td>" + item.id + "</td><td>" + item.username + "</td><td>" + item.email + "</td><td class='col-sm-4'>" + status + "</td><td>" +
-                        "<button class='btn btn-primary btn-sm'  onclick='btn_update(" + item.id + ")'>修改用户</button>&nbsp;&nbsp;&nbsp;" +
-                        "<button class='btn btn-danger btn-sm' id='delete' onclick='btn_del("+item.id+")' status='"+item.status+"'>删除用户</button>" +
+                        "<button class='btn btn-primary btn-sm'  onclick='btn_update(" + item.id + ")'>修改用户</button><br>" +
                         "</td></tr>");
 
                     $('tbody').append(content);
-                    $("button[status=0]").addClass("disabled").empty().append("已删除");
-                    $("button[status=0]").empty().append("已删除");
+
                 })
 
             },
@@ -171,10 +159,12 @@
             data: "id=" + id,
             datatype: "json",
             success: function (result) {
-                console.log(result);
+                console.log(result.status);
+                $('input[name= user_status]').removeAttr('checked');
                 $("#username").val([result.username]);
                 $("#password").val(result.password);
                 $("#email").val(result.email);
+                $("input[name= user_status]").val([result.status]).attr('checked', 'checked');
                 $("#save_btn").attr("onclick","update("+result.id+")");
                 $("#user_update_madal").modal('show');
             },
@@ -188,7 +178,7 @@
     $.ajax({
         url:"updateuser",
         data:{
-            "id":id,"method":"information","username":$("#username").val(),"password": $("#password").val(),"email":$("#email").val()
+            "id":id,"method":"information","username":$("#username").val(),"password": $("#password").val(),"email":$("#email").val(),"status":$("input[name = user_status]:checked").val()
         },
         type: "get",
         datatype: "json",
@@ -202,28 +192,9 @@
     })
     }
 
-    function btn_del(id) {
-        $("#del_button").attr("onclick","del("+id+")");
-        $("#confirm_del").modal('show');
-    }
 
-    function del(id) {
-        $.ajax({
-            url:"updateuser",
-            data:{
-                "id":id,"method":"del"
-            },
-            type: "get",
-            datatype: "json",
-            success:function (result) {
-                $("#user_update_madal").modal('hide');
-                window.location.replace(window.location.href)
-            },
-            error:function (e) {
 
-            }
-        })
-    }
+
 </script>
 </body>
 </html>

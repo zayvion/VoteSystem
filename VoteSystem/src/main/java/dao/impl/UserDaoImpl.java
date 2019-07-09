@@ -147,12 +147,13 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updateUser(User user) throws SQLException {
         conn = JDBCUtils.getConn();
-        String sql = "UPDATE `t_user` SET `username` = ?, `password` = ?, `email` = ?  WHERE `id` = ?";
+        String sql = "UPDATE `t_user` SET `username` = ?, `password` = ?, `email` = ? ,`status`= ? WHERE `id` = ?";
         ps = conn.prepareStatement(sql);
         ps.setString(1, user.getUsername());
         ps.setString(2, user.getPassword());
         ps.setString(3,user.getEmail());
-        ps.setInt(4,user.getId());
+        ps.setInt(4,user.getStatus());
+        ps.setInt(5,user.getId());
 
         try {
             int num = ps.executeUpdate();

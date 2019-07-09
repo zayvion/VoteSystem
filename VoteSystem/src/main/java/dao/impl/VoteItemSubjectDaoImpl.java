@@ -32,7 +32,7 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
         ps.setInt(3, voteItemSubject.getOper_user());
         ps.setTimestamp(4, (Timestamp) voteItemSubject.getCreate_time());
         ps.setTimestamp(5, (Timestamp) voteItemSubject.getUpdate_time());
-        ps.setTimestamp(6, new java.sql.Timestamp(voteItemSubject.geteffective_time().getTime()));
+        ps.setTimestamp(6, new java.sql.Timestamp(voteItemSubject.getEffective_time().getTime()));
         try {
             num = ps.executeUpdate();
             rs = ps.getGeneratedKeys();
@@ -77,7 +77,7 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
                 subject.setOper_user(userid);
                 subject.setCreate_time(create_time);
                 subject.setUpdate_time(update_time);
-                subject.seteffective_time(end_time);
+                subject.setEffective_time(end_time);
                 list.add(subject);
             }
 
@@ -112,7 +112,7 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
                 voteItemSubject.setCreate_time(create_time);
                 voteItemSubject.setUpdate_time(update_time);
                 voteItemSubject.setOper_user(oper_user);
-                voteItemSubject.seteffective_time(end_time);
+                voteItemSubject.setEffective_time(end_time);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -151,7 +151,7 @@ public class VoteItemSubjectDaoImpl implements VoteItemSubjectDao {
                 subject.setOper_user(userid);
                 subject.setCreate_time(create_time);
                 subject.setUpdate_time(update_time);
-                subject.seteffective_time(end_time);
+                subject.setEffective_time(end_time);
                 list.add(subject);
             }
 

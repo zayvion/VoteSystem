@@ -52,14 +52,6 @@ public class VoteItemSubject {
         this.isValidTime = isValidTime;
     }
 
-    public boolean isValidTime() {
-        return isValidTime;
-    }
-
-    public void setValidTime(boolean validTime) {
-        isValidTime = validTime;
-    }
-
     public Date getEffective_time() {
         return effective_time;
     }
@@ -68,12 +60,12 @@ public class VoteItemSubject {
         this.effective_time = effective_time;
     }
 
-    public Date geteffective_time() {
-        return effective_time;
+    public boolean isValidTime() {
+        return isValidTime;
     }
 
-    public void seteffective_time(Date effective_time) {
-        this.effective_time = effective_time;
+    public void setValidTime(boolean validTime) {
+        isValidTime = validTime;
     }
 
     public int getJoinNum() {
