@@ -29,7 +29,7 @@
 
         a {
             padding-left: 10px;
-            text-decoration: underline;
+            text-decoration: none;
             cursor: pointer;
             ext-decoration: none;
             color: inherit;

@@ -31,6 +31,25 @@
         .progress-bar{
             min-width: 2em;
         }
+        .panel{
+            padding-bottom: 15px;
+        }
+        #comment_content{
+            margin-bottom: 15px;
+        }
+        .comment-heading{
+            height: 40px;
+        }
+        .comment-heading span{
+            font-weight: bold;
+            font-size: 13px;
+            padding-left:15px;
+
+        }
+        .panel-body{
+            padding-left: 30px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -67,7 +86,18 @@
                 </div>--%>
 
             </div>
-                &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-primary" id="back_btn">返回投票列表</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-info" id="back_btn">返回投票列表</button>
+        </div>
+        <div id="comment">
+            <h4>发表评论</h4>
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" id="comment_content"></textarea>
+                    <button class="btn btn-primary" id="submit_btn"> 发表</button>
+                </div>
+            <h4>网友评论</h4>
+            <div id="user_comment"></div>
+
+
         </div>
         <footer class="modal-footer">
             <h4 class="text-center">在线投票系统</h4>
@@ -116,11 +146,58 @@
             $("#addoption").click(function () {
                 $("#options").append("<input type=\"text\" class=\"form-control\" placeholder=\"请输入选项\" aria-describedby=\"sizing-addon1\">");
             });
+        $.ajax({
+            url: "getcomments",
+            data: {
+                "sid":id
+            },
+            type: "post",
+            datatype: "json",
+            success:function (result) {
+                $.each(result,function (index,item) {
+                    var content_item = $("  <div class='panel panel-default'>\n" +
+                        "                <div class='panel-heading comment-heading'>\n" +
+                        "                    <span class='col-lg-6 col-sm-12'>昵称："+item.nickName+"</span>\n" +
+                        "                    <span class='col-lg-6 col-sm-12'>发布于："+item.publishTime+"</span>\n" +
+                        "                </div>\n" +
+                        "                <div class='panel-body'>\n" +
+                        "                    "+item.content+"\n" +
+                        "                </div>\n" +
+                        "            </div>")
+                    $("#user_comment").append(content_item);
+                })
+
+            },
+            error:function (e) {
+
+            }
+        })
         }
     )
     $("#back_btn").click(function () {
         window.location.replace("<%= basePath%>main.jsp")
     })
+    $("#submit_btn").click(function () {
+        let href = window.location.href;
+        let indexOf = href.indexOf("=");
+        var id = href.substring(indexOf+1,href.length)
+        $.ajax({
+            url: "addcomment",
+            data: {
+                "sid":id,"comment_content":$("#comment_content").val()
+            },
+            type: "post",
+            datatype: "json",
+            success:function (result) {
+                window.location.replace(window.location.href);
+            },
+            error:function (e) {
+
+            }
+        })
+    })
+
+
 </script>
 </body>
 </html>

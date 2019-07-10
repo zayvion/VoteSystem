@@ -74,9 +74,13 @@ public class VoteOptionDaoImpl implements VoteOptionDao {
         String sql = "SELECT COUNT(*) AS `num` FROM `t_join_vote` WHERE `o_id`= ? ";
         ps = conn.prepareStatement(sql);
         ps.setInt(1, optionId);
-        rs = ps.executeQuery();
-        while (rs.next()){
-             num = rs.getInt(1);
+        try {
+            rs = ps.executeQuery();
+            while (rs.next()){
+                 num = rs.getInt(1);
+            }
+        } finally {
+            JDBCUtils.release(conn,ps);
         }
         return num;
     }
@@ -88,9 +92,13 @@ public class VoteOptionDaoImpl implements VoteOptionDao {
         String sql = "SELECT COUNT(*) AS `num` FROM t_join_vote WHERE `s_id`= ?";
         ps = conn.prepareStatement(sql);
         ps.setInt(1, subjectId);
-        rs = ps.executeQuery();
-        while (rs.next()){
-            num = rs.getInt(1);
+        try {
+            rs = ps.executeQuery();
+            while (rs.next()){
+                num = rs.getInt(1);
+            }
+        } finally {
+            JDBCUtils.release(conn,ps);
         }
         return num;
     }
